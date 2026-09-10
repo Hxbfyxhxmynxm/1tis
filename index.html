@@ -5,17 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Расписание 1ТИС-2-26</title>
     
-    <!-- PWA Primary Meta Tags -->
     <meta name="theme-color" content="#0b0f17">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="1ТИС-2-26">
-    <meta name="description" content="Автоматическое расписание уроков группы 1ТИС-2-26">
 
-    <!-- Web Application Manifest (Data URI for single file deployment) -->
     <link rel="manifest" id="manifest-placeholder">
-
-    <!-- Fonts & Icons -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
@@ -25,98 +20,32 @@
             darkMode: 'class',
             theme: {
                 extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f6ff',
-                            100: '#e0edff',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#0f172a'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
+                    fontFamily: { sans: ['Inter', 'sans-serif'] }
                 }
             }
         }
     </script>
 
     <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; transition: background 0.3s ease; }
+        body.theme-pink { background: linear-gradient(135deg, #ffe6f0 0%, #ffcce6 50%, #ffb3d9 100%); color: #4a1525; }
+        body.theme-pink .glass-card { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 182, 193, 0.6); color: #4a1525; }
+        body.theme-pink .glass-active { background: rgba(236, 72, 153, 0.2); border-color: rgba(236, 72, 153, 0.8); color: #be185d; }
+        body.theme-pink header { background: rgba(255, 240, 245, 0.85) !important; }
 
-        /* THEMES DEFINITION */
-        body.theme-pink {
-            background: linear-gradient(135deg, #ffe6f0 0%, #ffcce6 50%, #ffb3d9 100%);
-            color: #4a1525;
-        }
-        body.theme-pink .glass-card {
-            background: rgba(255, 255, 255, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 182, 193, 0.6);
-            color: #4a1525;
-        }
-        body.theme-pink .glass-active {
-            background: rgba(236, 72, 153, 0.2);
-            border-color: rgba(236, 72, 153, 0.8);
-            color: #be185d;
-        }
-        body.theme-pink header {
-            background: rgba(255, 240, 245, 0.85) !important;
-            border-color: rgba(255, 192, 203, 0.5) !important;
-        }
+        body.theme-cyber { background: #0f051d; color: #f3e8ff; }
+        body.theme-cyber .glass-card { background: rgba(30, 10, 50, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(168, 85, 247, 0.2); }
+        body.theme-cyber .glass-active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.8); }
 
-        body.theme-cyber {
-            background: #0f051d;
-            color: #f3e8ff;
-        }
-        body.theme-cyber .glass-card {
-            background: rgba(30, 10, 50, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(168, 85, 247, 0.2);
-        }
-        body.theme-cyber .glass-active {
-            background: rgba(168, 85, 247, 0.3);
-            border-color: rgba(168, 85, 247, 0.8);
-        }
+        body.theme-mint { background: #062319; color: #ecfdf5; }
+        body.theme-mint .glass-card { background: rgba(6, 45, 32, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(52, 211, 153, 0.2); }
+        body.theme-mint .glass-active { background: rgba(52, 211, 153, 0.25); border-color: rgba(52, 211, 153, 0.8); }
 
-        body.theme-mint {
-            background: #062319;
-            color: #ecfdf5;
-        }
-        body.theme-mint .glass-card {
-            background: rgba(6, 45, 32, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(52, 211, 153, 0.2);
-        }
-        body.theme-mint .glass-active {
-            background: rgba(52, 211, 153, 0.25);
-            border-color: rgba(52, 211, 153, 0.8);
-        }
+        body.theme-dark { background: #0b0f17; color: #f3f4f6; }
+        body.theme-dark .glass-card { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        body.theme-dark .glass-active { background: rgba(37, 99, 235, 0.25); border-color: rgba(59, 130, 246, 0.6); }
 
-        body.theme-dark {
-            background: #0b0f17;
-            color: #f3f4f6;
-        }
-        body.theme-dark .glass-card {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        body.theme-dark .glass-active {
-            background: rgba(37, 99, 235, 0.25);
-            border-color: rgba(59, 130, 246, 0.6);
-        }
-
-        .glass-card {
-            backdrop-filter: blur(12px);
-        }
+        .glass-card { backdrop-filter: blur(12px); }
         .no-scrollbar::-webkit-scrollbar { display: none; }
         .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
@@ -124,40 +53,20 @@
 <body class="min-h-screen pb-16 flex flex-col justify-between theme-dark" id="body-tag">
 
     <div>
-        <!-- PWA Banner -->
-        <div id="pwa-install-banner" class="hidden bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white px-4 py-3 shadow-xl sticky top-0 z-50">
-            <div class="max-w-md mx-auto flex items-center justify-between gap-2">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-lg shrink-0">📱</div>
-                    <div>
-                        <p class="text-xs font-bold leading-tight">Установить как приложение</p>
-                        <p class="text-[10px] text-blue-100 opacity-90">Быстрый доступ с экрана телефона</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <button id="install-btn" onclick="installPWA()" class="bg-white text-blue-700 text-xs font-bold px-3 py-1.5 rounded-lg shadow active:scale-95 transition shrink-0">Установить</button>
-                    <button onclick="dismissInstallBanner()" class="text-white/70 hover:text-white p-1 text-xs"><i class="fa-solid fa-xmark text-sm"></i></button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Header -->
         <header class="sticky top-0 z-40 glass-card border-b px-4 py-3 shadow-lg">
             <div class="max-w-md mx-auto flex justify-between items-center">
                 <div>
                     <div class="flex items-center space-x-2">
-                        <span class="bg-blue-600/90 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">2 смена</span>
-                        <h1 id="header-group-title" class="text-xl font-black tracking-tight">1ТИС-2-26</h1>
+                        <span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">2 смена</span>
+                        <h1 class="text-xl font-black tracking-tight">1ТИС-2-26</h1>
                     </div>
-                    <p id="current-date-str" class="text-xs opacity-70 mt-0.5">Загрузка даты...</p>
+                    <p id="current-date-str" class="text-xs opacity-70 mt-0.5">Загрузка...</p>
                 </div>
                 
                 <div class="flex items-center gap-2">
-                    <!-- Theme Selector Button -->
-                    <button onclick="cycleTheme()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold glass-card flex items-center gap-1 shadow-sm active:scale-95" title="Сменить тему">
+                    <button onclick="cycleTheme()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold glass-card shadow-sm active:scale-95" title="Тема">
                         <i class="fa-solid fa-palette text-sm"></i>
                     </button>
-                    <!-- Week Switcher Button (Auto / 1 / 2) -->
                     <button id="week-toggle-btn" onclick="cycleWeekMode()" class="px-3 py-1.5 rounded-xl text-xs font-bold glass-card flex items-center gap-1.5 shadow-sm active:scale-95">
                         <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
                         <span id="week-toggle-text">Авто</span>
@@ -166,18 +75,9 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="max-w-md mx-auto px-4 space-y-4 mt-3">
             
-            <!-- College Groups Bar -->
-            <div class="overflow-x-auto no-scrollbar flex items-center gap-2 py-1">
-                <span class="text-[10px] font-bold opacity-60 uppercase shrink-0">Группы:</span>
-                <div id="groups-bar" class="flex items-center gap-2">
-                    <!-- Injected via JS -->
-                </div>
-            </div>
-
-            <!-- Live Status & Countdown Card -->
+            <!-- Live Status Card -->
             <div id="live-status-card" class="hidden glass-card rounded-2xl p-3.5 border-l-4 border-l-emerald-500 shadow-md">
                 <div class="flex items-center justify-between">
                     <div class="flex items-center gap-2.5">
@@ -187,7 +87,7 @@
                         </span>
                         <div>
                             <span id="live-status-title" class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">ИДЕТ УРОК</span>
-                            <p id="live-status-sub" class="text-xs font-medium truncate max-w-[200px]">Математика</p>
+                            <p id="live-status-sub" class="text-xs font-medium truncate max-w-[200px]"></p>
                         </div>
                     </div>
                     <div class="text-right shrink-0">
@@ -220,8 +120,8 @@
             <div id="status-banner" class="glass-card rounded-2xl p-4 flex items-center justify-between border-l-4 border-l-blue-500 shadow-md">
                 <div>
                     <span id="view-badge" class="text-[11px] font-extrabold text-blue-400 uppercase tracking-wider block mb-0.5">СЕГОДНЯ</span>
-                    <h2 id="view-title" class="text-lg font-bold">Четверг</h2>
-                    <p id="view-subtitle" class="text-xs opacity-70 mt-0.5">1-я неделя (Числитель)</p>
+                    <h2 id="view-title" class="text-lg font-bold">--</h2>
+                    <p id="view-subtitle" class="text-xs opacity-70 mt-0.5">--</p>
                 </div>
                 
                 <button onclick="copyToWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white p-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50" title="Скопировать для WhatsApp">
@@ -235,42 +135,18 @@
             <!-- Schedule Timetable Card -->
             <div class="glass-card rounded-2xl p-4 mt-6">
                 <h3 class="text-xs font-bold opacity-70 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <i class="fa-regular fa-clock text-blue-400"></i> Расписание пар (2 смена)
+                    <i class="fa-regular fa-clock text-blue-400"></i> Время пар (2 смена)
                 </h3>
                 <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                        <span class="opacity-60 block mb-0.5">1 пара:</span>
-                        <span class="font-bold">14:00 – 15:05</span>
-                    </div>
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                        <span class="opacity-60 block mb-0.5">2 пара:</span>
-                        <span class="font-bold">15:10 – 16:15</span>
-                    </div>
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                        <span class="opacity-60 block mb-0.5">3 пара:</span>
-                        <span class="font-bold">16:25 – 17:30</span>
-                    </div>
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5">
-                        <span class="opacity-60 block mb-0.5">4 пара:</span>
-                        <span class="font-bold">17:35 – 18:40</span>
-                    </div>
+                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">1 пара:</span><span class="font-bold">14:00 – 15:05</span></div>
+                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">2 пара:</span><span class="font-bold">15:10 – 16:15</span></div>
+                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">3 пара:</span><span class="font-bold">16:25 – 17:30</span></div>
+                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">4 пара:</span><span class="font-bold">17:35 – 18:40</span></div>
                 </div>
-            </div>
-
-            <!-- iOS Instructions -->
-            <div class="glass-card rounded-2xl p-4 border border-blue-500/20 text-xs space-y-2">
-                <div class="flex items-center justify-between font-bold">
-                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-mobile-screen"></i> Как добавить иконку на экран?</span>
-                </div>
-                <p class="opacity-80 leading-relaxed">
-                    <strong>iPhone (Safari):</strong> нажми «Поделиться» <i class="fa-solid fa-share-from-square text-blue-400"></i> ➔ <strong>«На экран "Домой"»</strong>.<br>
-                    <strong>Android (Chrome):</strong> нажми 3 точки <i class="fa-solid fa-ellipsis-vertical text-blue-400"></i> ➔ <strong>«Добавить на главный экран»</strong>.
-                </p>
             </div>
         </main>
     </div>
 
-    <!-- Toast -->
     <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 z-50">
         <i class="fa-solid fa-circle-check text-base"></i>
         <span id="toast-msg">Готово!</span>
@@ -278,8 +154,8 @@
 
     <script>
         const manifestData = {
-            "name": "Расписание колледжа",
-            "short_name": "Расписание",
+            "name": "Расписание 1ТИС-2-26",
+            "short_name": "1ТИС-2-26",
             "start_url": ".",
             "display": "standalone",
             "background_color": "#0b0f17",
@@ -297,89 +173,70 @@
 
         const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 
-        const schedulesData = {
-            "1ТИС-2-26": {
-                1: {
-                    1: [
-                        { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
-                        { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
-                        { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
-                        { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
-                    ],
-                    2: [
-                        { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                        { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
-                        { num: 3, subject: "НВП", teacher: "Бердіқұл Б.А." },
-                        { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
-                    ],
-                    3: [
-                        { num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                        { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
-                        { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
-                        { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                    ],
-                    4: [
-                        { num: 1, subject: "Химия", teacher: "Жүніс У.Х." },
-                        { num: 2, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                        { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." },
-                        { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                    ],
-                    5: [
-                        { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
-                        { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
-                        { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                    ]
-                },
-                2: {
-                    1: [
-                        { num: 1, subject: "Химия", teacher: "Нурмуханова А.В." },
-                        { num: 2, subject: "Қазақ тілі", teacher: "Уайсова М.С." },
-                        { num: 3, subject: "Шет тілі", teacher: "Омар З.Б." },
-                        { num: 4, subject: "Русский язык и литература", teacher: "Кожамкулова М.А." }
-                    ],
-                    2: [
-                        { num: 1, subject: "Қазақ тілі", teacher: "Уайсова М.С." },
-                        { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
-                        { num: 3, subject: "Физика", teacher: "Мырзақұл Ә.Н." }
-                    ],
-                    3: [
-                        { num: 1, subject: "Русский язык и литература", teacher: "Кожамкулова М.А." },
-                        { num: 2, subject: "Қазақстан тарихы", teacher: "Оспанов М.М." },
-                        { num: 3, subject: "Биология", teacher: "Ермекқалиева З.А." },
-                        { num: 4, subject: "Физика", teacher: "Мырзақұл Ә.Н." }
-                    ],
-                    4: [
-                        { num: 1, subject: "Химия", teacher: "Нурмуханова А.В." },
-                        { num: 2, subject: "География", teacher: "Байбакирова С.Ж." },
-                        { num: 3, subject: "Қазақ әдебиеті", teacher: "Уайсова М.С." },
-                        { num: 4, subject: "Дене шынықтыру", teacher: "Амангелді Ә.Р." }
-                    ],
-                    5: [
-                        { num: 1, subject: "Математика", teacher: "Аманбек П.Б." },
-                        { num: 2, subject: "Дүниежүзі тарихы", teacher: "Жанбатырова А.Е." },
-                        { num: 3, subject: "Графика және жобалау", teacher: "Бақыт А.Б." }
-                    ]
-                }
+        // EXACT schedule provided by user
+        const schedule = {
+            1: {
+                1: [
+                    { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
+                    { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
+                    { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
+                    { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
+                ],
+                2: [
+                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
+                    { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
+                    { num: 3, subject: "НВП", teacher: "Бердіқұл Б.А." },
+                    { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
+                ],
+                3: [
+                    { num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                    { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
+                    { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
+                    { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
+                ],
+                4: [
+                    { num: 1, subject: "Химия", teacher: "Жүніс У.Х." },
+                    { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
+                ],
+                5: [
+                    { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
+                    { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
+                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
+                ]
             },
-            "1ВЕБ-1-26": {
-                1: {
-                    1: [{ num: 1, subject: "Основы веб-разработки", teacher: "Преподаватель В." }, { num: 2, subject: "Математика", teacher: "Ерғали А.Ә." }],
-                    2: [{ num: 1, subject: "HTML / CSS", teacher: "Преподаватель В." }, { num: 2, subject: "Физика", teacher: "Жексенбина А.З." }],
-                    3: [{ num: 1, subject: "Иностранный язык", teacher: "Момынқұлова М.А." }],
-                    4: [{ num: 1, subject: "Базы данных", teacher: "Преподаватель В." }],
-                    5: [{ num: 1, subject: "Алгоритмы", teacher: "Преподаватель В." }]
-                },
-                2: {
-                    1: [{ num: 1, subject: "JavaScript основы", teacher: "Преподаватель В." }, { num: 2, subject: "Математика", teacher: "Ерғали А.Ә." }],
-                    2: [{ num: 1, subject: "HTML / CSS", teacher: "Преподаватель В." }, { num: 2, subject: "Физика", teacher: "Жексенбина А.З." }],
-                    3: [{ num: 1, subject: "Иностранный язык", teacher: "Момынқұлова М.А." }],
-                    4: [{ num: 1, subject: "Дизайн интерфейсов", teacher: "Преподаватель В." }],
-                    5: [{ num: 1, subject: "Проектная работа", teacher: "Преподаватель В." }]
-                }
+            2: {
+                1: [
+                    { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
+                    { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
+                    { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
+                    { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
+                ],
+                2: [
+                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
+                    { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
+                    { num: 3, subject: "Математика", teacher: "Ерғали А.Ә." },
+                    { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
+                ],
+                3: [
+                    { num: 1, subject: "Физика", teacher: "Жексенбина А.З." },
+                    { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
+                    { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
+                    { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
+                ],
+                4: [
+                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
+                    { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                    { num: 3, subject: "Русская литература", teacher: "Ибраева Н.Н." }
+                ],
+                5: [
+                    { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
+                    { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
+                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
+                ]
             }
         };
 
-        let currentGroup = localStorage.getItem('selected_group') || '1ТИС-2-26';
         let currentTheme = localStorage.getItem('selected_theme') || 'theme-dark';
         let weekMode = localStorage.getItem('week_mode') || 'auto';
         let currentView = 'today';
@@ -402,15 +259,12 @@
 
         window.onload = function() {
             applyTheme(currentTheme);
-            renderGroupsBar();
-
             const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
             document.getElementById('current-date-str').innerText = todayDate.toLocaleDateString('ru-RU', options);
             
+            document.getElementById('today-day-sub').innerText = daysNames[todayDate.getDay()];
             const tomorrowDate = new Date(todayDate);
             tomorrowDate.setDate(todayDate.getDate() + 1);
-            
-            document.getElementById('today-day-sub').innerText = daysNames[todayDate.getDay()];
             document.getElementById('tomorrow-day-sub').innerText = daysNames[tomorrowDate.getDay()];
 
             updateWeekToggleUI();
@@ -418,28 +272,6 @@
             updateLiveTimer();
             setInterval(updateLiveTimer, 10000);
         };
-
-        function setGroup(groupName) {
-            currentGroup = groupName;
-            localStorage.setItem('selected_group', groupName);
-            document.getElementById('header-group-title').innerText = groupName;
-            renderGroupsBar();
-            setView(currentView);
-        }
-
-        function renderGroupsBar() {
-            const bar = document.getElementById('groups-bar');
-            bar.innerHTML = '';
-            Object.keys(schedulesData).forEach(g => {
-                const isSelected = g === currentGroup;
-                const btn = document.createElement('button');
-                btn.className = `px-3 py-1.5 rounded-xl text-xs font-bold transition shrink-0 ${isSelected ? 'bg-blue-600 text-white shadow-md' : 'glass-card opacity-70 hover:opacity-100'}`;
-                btn.innerText = g;
-                btn.onclick = () => setGroup(g);
-                bar.appendChild(btn);
-            });
-            document.getElementById('header-group-title').innerText = currentGroup;
-        }
 
         const themesList = ['theme-dark', 'theme-pink', 'theme-cyber', 'theme-mint'];
         function cycleTheme() {
@@ -449,10 +281,9 @@
             applyTheme(currentTheme);
         }
 
-        function applyTheme(themeName) {
-            const body = document.getElementById('body-tag');
-            body.className = `min-h-screen pb-16 flex flex-col justify-between ${themeName}`;
-            currentTheme = themeName;
+        function applyTheme(name) {
+            document.getElementById('body-tag').className = `min-h-screen pb-16 flex flex-col justify-between ${name}`;
+            currentTheme = name;
         }
 
         function cycleWeekMode() {
@@ -484,15 +315,14 @@
             const bannerTitle = document.getElementById('view-title');
             const bannerSub = document.getElementById('view-subtitle');
 
-            const sched = schedulesData[currentGroup] || schedulesData["1ТИС-2-26"];
             const activeWeek = getActiveWeekForDate(todayDate);
 
             if (view === 'today') {
                 const dayOfWeek = todayDate.getDay();
                 bannerBadge.innerText = "СЕГОДНЯ";
                 bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${activeWeek}-я неделя (${activeWeek === 1 ? 'Числитель' : 'Знаменатель'}) • ${currentGroup} [${weekMode.toUpperCase()}]`;
-                renderSingleDay(sched, activeWeek, dayOfWeek, container);
+                bannerSub.innerText = `${activeWeek}-я неделя (${activeWeek === 1 ? 'Числитель' : 'Знаменатель'})`;
+                renderSingleDay(activeWeek, dayOfWeek, container);
             } 
             else if (view === 'tomorrow') {
                 const tomorrowDate = new Date(todayDate);
@@ -501,35 +331,34 @@
                 if (todayDate.getDay() === 0 && weekMode === 'auto') {
                     tomorrowWeek = activeWeek === 1 ? 2 : 1;
                 }
-
                 const dayOfWeek = tomorrowDate.getDay();
                 bannerBadge.innerText = "ЗАВТРА";
                 bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${tomorrowWeek}-я неделя • ${currentGroup} [${weekMode.toUpperCase()}]`;
-                renderSingleDay(sched, tomorrowWeek, dayOfWeek, container);
+                bannerSub.innerText = `${tomorrowWeek}-я неделя`;
+                renderSingleDay(tomorrowWeek, dayOfWeek, container);
             }
             else if (view === 'week1') {
                 bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
                 bannerTitle.innerText = "1 Неделя";
-                bannerSub.innerText = `Числитель • ${currentGroup}`;
-                renderFullWeek(sched, 1, container);
+                bannerSub.innerText = "Числитель";
+                renderFullWeek(1, container);
             }
             else if (view === 'week2') {
                 bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
                 bannerTitle.innerText = "2 Неделя";
-                bannerSub.innerText = `Знаменатель • ${currentGroup}`;
-                renderFullWeek(sched, 2, container);
+                bannerSub.innerText = "Знаменатель";
+                renderFullWeek(2, container);
             }
         }
 
-        function renderSingleDay(sched, weekNum, dayNum, targetEl) {
+        function renderSingleDay(weekNum, dayNum, targetEl) {
             if (dayNum === 0 || dayNum === 6) {
                 targetEl.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center space-y-3"><div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center mx-auto text-3xl"><i class="fa-solid fa-mug-hot"></i></div><h3 class="text-lg font-bold">Выходной день!</h3><p class="text-xs opacity-70">Сегодня уроков нет.</p></div>`;
                 return;
             }
-            const dayLessons = sched[weekNum]?.[dayNum] || [];
+            const dayLessons = schedule[weekNum]?.[dayNum] || [];
             if (dayLessons.length === 0) {
-                targetEl.innerHTML = `<p class="opacity-70 text-center py-6 text-sm">Уроков не найдено.</p>`;
+                targetEl.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center"><p class="opacity-70 text-sm">Уроков нет</p></div>`;
                 return;
             }
             const now = new Date();
@@ -543,9 +372,9 @@
             });
         }
 
-        function renderFullWeek(sched, weekNum, targetEl) {
+        function renderFullWeek(weekNum, targetEl) {
             for (let day = 1; day <= 5; day++) {
-                const dayLessons = sched[weekNum]?.[day] || [];
+                const dayLessons = schedule[weekNum]?.[day] || [];
                 const dayHeader = document.createElement('div');
                 dayHeader.className = "flex items-center space-x-2 pt-3 pb-1";
                 dayHeader.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><h3 class="text-sm font-bold">${daysNames[day]}</h3>`;
@@ -586,7 +415,7 @@
 
             const currentMin = now.getHours() * 60 + now.getMinutes();
             const activeWeek = getActiveWeekForDate(now);
-            const dayLessons = schedulesData[currentGroup]?.[activeWeek]?.[dayNum] || [];
+            const dayLessons = schedule[activeWeek]?.[dayNum] || [];
             const liveCard = document.getElementById('live-status-card');
             let activeLesson = null, nextLesson = null;
 
@@ -613,13 +442,12 @@
 
         function copyToWhatsApp() {
             const activeWeek = getActiveWeekForDate(todayDate);
-            let text = `📅 *РАСПИСАНИЕ ${currentGroup}* (${activeWeek}-я неделя)\n\n`;
-            const sched = schedulesData[currentGroup]?.[activeWeek];
+            let text = `📅 РАСПИСАНИЕ 1ТИС-2-26 (${activeWeek}-я неделя)\n\n`;
+            const sched = schedule[activeWeek];
             for (let day = 1; day <= 5; day++) {
-                text += `📌 *${daysNames[day].toUpperCase()}*:\n`;
+                text += `📌 ${daysNames[day]}\n`;
                 (sched?.[day] || []).forEach(l => {
-                    const t = lessonTimes[l.num];
-                    text += `${l.num}. ${l.subject} (${t.start}-${t.end})\n`;
+                    text += ` * ${l.subject} (${l.teacher})\n`;
                 });
                 text += `\n`;
             }
@@ -638,21 +466,6 @@
             toast.classList.remove('opacity-0');
             setTimeout(() => toast.classList.add('opacity-0'), 2500);
         }
-
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('pwa-install-banner').classList.remove('hidden');
-        });
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then(() => deferredPrompt = null);
-                document.getElementById('pwa-install-banner').classList.add('hidden');
-            }
-        }
-        function dismissInstallBanner() { document.getElementById('pwa-install-banner').classList.add('hidden'); }
     </script>
 </body>
 </html>
