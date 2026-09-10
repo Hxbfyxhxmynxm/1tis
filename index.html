@@ -1,471 +1,62 @@
-<!DOCTYPE html>
-<html lang="ru" class="dark">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Расписание 1ТИС-2-26</title>
-    
-    <meta name="theme-color" content="#0b0f17">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="1ТИС-2-26">
-
-    <link rel="manifest" id="manifest-placeholder">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    fontFamily: { sans: ['Inter', 'sans-serif'] }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; transition: background 0.3s ease; }
-        body.theme-pink { background: linear-gradient(135deg, #ffe6f0 0%, #ffcce6 50%, #ffb3d9 100%); color: #4a1525; }
-        body.theme-pink .glass-card { background: rgba(255, 255, 255, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 182, 193, 0.6); color: #4a1525; }
-        body.theme-pink .glass-active { background: rgba(236, 72, 153, 0.2); border-color: rgba(236, 72, 153, 0.8); color: #be185d; }
-        body.theme-pink header { background: rgba(255, 240, 245, 0.85) !important; }
-
-        body.theme-cyber { background: #0f051d; color: #f3e8ff; }
-        body.theme-cyber .glass-card { background: rgba(30, 10, 50, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(168, 85, 247, 0.2); }
-        body.theme-cyber .glass-active { background: rgba(168, 85, 247, 0.3); border-color: rgba(168, 85, 247, 0.8); }
-
-        body.theme-mint { background: #062319; color: #ecfdf5; }
-        body.theme-mint .glass-card { background: rgba(6, 45, 32, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(52, 211, 153, 0.2); }
-        body.theme-mint .glass-active { background: rgba(52, 211, 153, 0.25); border-color: rgba(52, 211, 153, 0.8); }
-
-        body.theme-dark { background: #0b0f17; color: #f3f4f6; }
-        body.theme-dark .glass-card { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
-        body.theme-dark .glass-active { background: rgba(37, 99, 235, 0.25); border-color: rgba(59, 130, 246, 0.6); }
-
-        .glass-card { backdrop-filter: blur(12px); }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-    </style>
-</head>
-<body class="min-h-screen pb-16 flex flex-col justify-between theme-dark" id="body-tag">
-
-    <div>
-        <header class="sticky top-0 z-40 glass-card border-b px-4 py-3 shadow-lg">
-            <div class="max-w-md mx-auto flex justify-between items-center">
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">2 смена</span>
-                        <h1 class="text-xl font-black tracking-tight">1ТИС-2-26</h1>
-                    </div>
-                    <p id="current-date-str" class="text-xs opacity-70 mt-0.5">Загрузка...</p>
-                </div>
-                
-                <div class="flex items-center gap-2">
-                    <button onclick="cycleTheme()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold glass-card shadow-sm active:scale-95" title="Тема">
-                        <i class="fa-solid fa-palette text-sm"></i>
-                    </button>
-                    <button id="week-toggle-btn" onclick="cycleWeekMode()" class="px-3 py-1.5 rounded-xl text-xs font-bold glass-card flex items-center gap-1.5 shadow-sm active:scale-95">
-                        <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
-                        <span id="week-toggle-text">Авто</span>
-                    </button>
-                </div>
-            </div>
-        </header>
-
-        <main class="max-w-md mx-auto px-4 space-y-4 mt-3">
-            
-            <!-- Live Status Card -->
-            <div id="live-status-card" class="hidden glass-card rounded-2xl p-3.5 border-l-4 border-l-emerald-500 shadow-md">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                        </span>
-                        <div>
-                            <span id="live-status-title" class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">ИДЕТ УРОК</span>
-                            <p id="live-status-sub" class="text-xs font-medium truncate max-w-[200px]"></p>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <span id="live-timer-badge" class="text-xs font-bold text-emerald-300 bg-emerald-900/50 border border-emerald-500/30 px-2.5 py-1 rounded-lg">--:--</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabs Navigation -->
-            <nav class="flex space-x-2 overflow-x-auto no-scrollbar py-0.5">
-                <button onclick="setView('today')" id="tab-today" class="tab-btn flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>Сегодня</span>
-                    <span id="today-day-sub" class="text-[10px] opacity-60 font-normal">--</span>
-                </button>
-                <button onclick="setView('tomorrow')" id="tab-tomorrow" class="tab-btn flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>Завтра</span>
-                    <span id="tomorrow-day-sub" class="text-[10px] opacity-60 font-normal">--</span>
-                </button>
-                <button onclick="setView('week1')" id="tab-week1" class="tab-btn flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>1 Неделя</span>
-                    <span class="text-[10px] opacity-60 font-normal">Числитель</span>
-                </button>
-                <button onclick="setView('week2')" id="tab-week2" class="tab-btn flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>2 Неделя</span>
-                    <span class="text-[10px] opacity-60 font-normal">Знаменатель</span>
-                </button>
-            </nav>
-
-            <!-- Banner Info -->
-            <div id="status-banner" class="glass-card rounded-2xl p-4 flex items-center justify-between border-l-4 border-l-blue-500 shadow-md">
-                <div>
-                    <span id="view-badge" class="text-[11px] font-extrabold text-blue-400 uppercase tracking-wider block mb-0.5">СЕГОДНЯ</span>
-                    <h2 id="view-title" class="text-lg font-bold">--</h2>
-                    <p id="view-subtitle" class="text-xs opacity-70 mt-0.5">--</p>
-                </div>
-                
-                <button onclick="copyToWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white p-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50" title="Скопировать для WhatsApp">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                </button>
-            </div>
-
-            <!-- Lessons List -->
-            <div id="lessons-container" class="space-y-3"></div>
-
-            <!-- Schedule Timetable Card -->
-            <div class="glass-card rounded-2xl p-4 mt-6">
-                <h3 class="text-xs font-bold opacity-70 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <i class="fa-regular fa-clock text-blue-400"></i> Время пар (2 смена)
-                </h3>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">1 пара:</span><span class="font-bold">14:00 – 15:05</span></div>
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">2 пара:</span><span class="font-bold">15:10 – 16:15</span></div>
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">3 пара:</span><span class="font-bold">16:25 – 17:30</span></div>
-                    <div class="bg-black/20 p-2.5 rounded-xl border border-white/5"><span class="opacity-60 block mb-0.5">4 пара:</span><span class="font-bold">17:35 – 18:40</span></div>
-                </div>
-            </div>
-        </main>
-    </div>
-
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 z-50">
-        <i class="fa-solid fa-circle-check text-base"></i>
-        <span id="toast-msg">Готово!</span>
-    </div>
-
-    <script>
-        const manifestData = {
-            "name": "Расписание 1ТИС-2-26",
-            "short_name": "1ТИС-2-26",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#0b0f17",
-            "theme_color": "#0b0f17",
-            "icons": [{"src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512'><rect width='512' height='512' rx='100' fill='%232563eb'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='160' fill='%23ffffff'>ТИС</text></svg>", "sizes": "512x512", "type": "image/svg+xml"}]
-        };
-        document.getElementById('manifest-placeholder').setAttribute('href', URL.createObjectURL(new Blob([JSON.stringify(manifestData)], {type: 'application/json'})));
-
-        const lessonTimes = {
-            1: { start: "14:00", end: "15:05", startMin: 14 * 60, endMin: 15 * 60 + 5 },
-            2: { start: "15:10", end: "16:15", startMin: 15 * 60 + 10, endMin: 16 * 60 + 15 },
-            3: { start: "16:25", end: "17:30", startMin: 16 * 60 + 25, endMin: 17 * 60 + 30 },
-            4: { start: "17:35", end: "18:40", startMin: 17 * 60 + 35, endMin: 18 * 60 + 40 }
-        };
-
-        const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-
-        // EXACT schedule provided by user
-        const schedule = {
-            1: {
-                1: [
-                    { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
-                    { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
-                    { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
-                    { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
-                ],
-                2: [
-                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
-                    { num: 3, subject: "НВП", teacher: "Бердіқұл Б.А." },
-                    { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
-                ],
-                3: [
-                    { num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
-                    { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
-                    { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                4: [
-                    { num: 1, subject: "Химия", teacher: "Жүніс У.Х." },
-                    { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                ],
-                5: [
-                    { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
-                    { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
-                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                ]
-            },
-            2: {
-                1: [
-                    { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
-                    { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
-                    { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
-                    { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
-                ],
-                2: [
-                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
-                    { num: 3, subject: "Математика", teacher: "Ерғали А.Ә." },
-                    { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
-                ],
-                3: [
-                    { num: 1, subject: "Физика", teacher: "Жексенбина А.З." },
-                    { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
-                    { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
-                    { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                4: [
-                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { num: 3, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                5: [
-                    { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
-                    { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
-                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                ]
-            }
-        };
-
-        let currentTheme = localStorage.getItem('selected_theme') || 'theme-dark';
-        let weekMode = localStorage.getItem('week_mode') || 'auto';
-        let currentView = 'today';
-        const todayDate = new Date();
-
-        function getAutoCalculatedWeek(date) {
-            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-            const dayNum = d.getUTCDay() || 7;
-            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-            return (weekNo % 2 === 1) ? 1 : 2;
-        }
-
-        function getActiveWeekForDate(date) {
-            if (weekMode === '1') return 1;
-            if (weekMode === '2') return 2;
-            return getAutoCalculatedWeek(date);
-        }
-
-        window.onload = function() {
-            applyTheme(currentTheme);
-            const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
-            document.getElementById('current-date-str').innerText = todayDate.toLocaleDateString('ru-RU', options);
-            
-            document.getElementById('today-day-sub').innerText = daysNames[todayDate.getDay()];
-            const tomorrowDate = new Date(todayDate);
-            tomorrowDate.setDate(todayDate.getDate() + 1);
-            document.getElementById('tomorrow-day-sub').innerText = daysNames[tomorrowDate.getDay()];
-
-            updateWeekToggleUI();
-            setView('today');
-            updateLiveTimer();
-            setInterval(updateLiveTimer, 10000);
-        };
-
-        const themesList = ['theme-dark', 'theme-pink', 'theme-cyber', 'theme-mint'];
-        function cycleTheme() {
-            let nextIdx = (themesList.indexOf(currentTheme) + 1) % themesList.length;
-            currentTheme = themesList[nextIdx];
-            localStorage.setItem('selected_theme', currentTheme);
-            applyTheme(currentTheme);
-        }
-
-        function applyTheme(name) {
-            document.getElementById('body-tag').className = `min-h-screen pb-16 flex flex-col justify-between ${name}`;
-            currentTheme = name;
-        }
-
-        function cycleWeekMode() {
-            if (weekMode === 'auto') weekMode = '1';
-            else if (weekMode === '1') weekMode = '2';
-            else weekMode = 'auto';
-
-            localStorage.setItem('week_mode', weekMode);
-            updateWeekToggleUI();
-            setView(currentView);
-        }
-
-        function updateWeekToggleUI() {
-            let text = "Авто";
-            if (weekMode === '1') text = "1-я нед";
-            if (weekMode === '2') text = "2-я нед";
-            document.getElementById('week-toggle-text').innerText = text;
-        }
-
-        function setView(view) {
-            currentView = view;
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('glass-active', 'border-blue-500', 'text-blue-400'));
-            document.getElementById(`tab-${view}`).classList.add('glass-active', 'border-blue-500', 'text-blue-400');
-
-            const container = document.getElementById('lessons-container');
-            container.innerHTML = '';
-
-            const bannerBadge = document.getElementById('view-badge');
-            const bannerTitle = document.getElementById('view-title');
-            const bannerSub = document.getElementById('view-subtitle');
-
-            const activeWeek = getActiveWeekForDate(todayDate);
-
-            if (view === 'today') {
-                const dayOfWeek = todayDate.getDay();
-                bannerBadge.innerText = "СЕГОДНЯ";
-                bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${activeWeek}-я неделя (${activeWeek === 1 ? 'Числитель' : 'Знаменатель'})`;
-                renderSingleDay(activeWeek, dayOfWeek, container);
-            } 
-            else if (view === 'tomorrow') {
-                const tomorrowDate = new Date(todayDate);
-                tomorrowDate.setDate(tomorrowDate.getDate() + 1);
-                let tomorrowWeek = activeWeek;
-                if (todayDate.getDay() === 0 && weekMode === 'auto') {
-                    tomorrowWeek = activeWeek === 1 ? 2 : 1;
-                }
-                const dayOfWeek = tomorrowDate.getDay();
-                bannerBadge.innerText = "ЗАВТРА";
-                bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${tomorrowWeek}-я неделя`;
-                renderSingleDay(tomorrowWeek, dayOfWeek, container);
-            }
-            else if (view === 'week1') {
-                bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
-                bannerTitle.innerText = "1 Неделя";
-                bannerSub.innerText = "Числитель";
-                renderFullWeek(1, container);
-            }
-            else if (view === 'week2') {
-                bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
-                bannerTitle.innerText = "2 Неделя";
-                bannerSub.innerText = "Знаменатель";
-                renderFullWeek(2, container);
-            }
-        }
-
-        function renderSingleDay(weekNum, dayNum, targetEl) {
-            if (dayNum === 0 || dayNum === 6) {
-                targetEl.innerHTML = `<div class="glass-card rounded-2xl p-8 text-center space-y-3"><div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center mx-auto text-3xl"><i class="fa-solid fa-mug-hot"></i></div><h3 class="text-lg font-bold">Выходной день!</h3><p class="text-xs opacity-70">Сегодня уроков нет.</p></div>`;
-                return;
-            }
-            const dayLessons = schedule[weekNum]?.[dayNum] || [];
-            if (dayLessons.length === 0) {
-                targetEl.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center"><p class="opacity-70 text-sm">Уроков нет</p></div>`;
-                return;
-            }
-            const now = new Date();
-            const currentMin = now.getHours() * 60 + now.getMinutes();
-            const isTodayView = (currentView === 'today' && dayNum === todayDate.getDay());
-
-            dayLessons.forEach((lesson) => {
-                const times = lessonTimes[lesson.num];
-                const isCurrent = isTodayView && (currentMin >= times.startMin && currentMin <= times.endMin);
-                targetEl.appendChild(createLessonCard(lesson, isCurrent));
-            });
-        }
-
-        function renderFullWeek(weekNum, targetEl) {
-            for (let day = 1; day <= 5; day++) {
-                const dayLessons = schedule[weekNum]?.[day] || [];
-                const dayHeader = document.createElement('div');
-                dayHeader.className = "flex items-center space-x-2 pt-3 pb-1";
-                dayHeader.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span><h3 class="text-sm font-bold">${daysNames[day]}</h3>`;
-                targetEl.appendChild(dayHeader);
-
-                dayLessons.forEach((lesson) => targetEl.appendChild(createLessonCard(lesson, false)));
-            }
-        }
-
-        function createLessonCard(lesson, isCurrent) {
-            const card = document.createElement('div');
-            const activeBorder = isCurrent ? "border-emerald-500 bg-emerald-950/20 shadow-lg" : "";
-            card.className = `glass-card rounded-2xl p-4 flex items-center justify-between gap-3 transition ${activeBorder}`;
-            const times = lessonTimes[lesson.num];
-
-            card.innerHTML = `
-                <div class="flex items-center gap-3.5 min-w-0">
-                    <div class="w-10 h-10 rounded-xl ${isCurrent ? 'bg-emerald-600 text-white font-extrabold' : 'bg-blue-600/20 text-blue-400 font-bold'} border border-blue-500/20 text-sm flex items-center justify-center shrink-0">${lesson.num}</div>
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold truncate leading-snug">${lesson.subject}</h4>
-                            ${isCurrent ? '<span class="text-[9px] bg-emerald-500 text-black font-extrabold px-1.5 py-0.5 rounded uppercase">Сейчас</span>' : ''}
-                        </div>
-                        <p class="text-xs opacity-70 truncate mt-0.5">${lesson.teacher}</p>
-                    </div>
-                </div>
-                <div class="text-right shrink-0">
-                    <span class="inline-block px-2.5 py-1 rounded-lg bg-black/20 text-[11px] font-medium border border-white/5">${times.start} – ${times.end}</span>
-                </div>
-            `;
-            return card;
-        }
-
-        function updateLiveTimer() {
-            const now = new Date();
-            const dayNum = now.getDay();
-            if (dayNum === 0 || dayNum === 6) return;
-
-            const currentMin = now.getHours() * 60 + now.getMinutes();
-            const activeWeek = getActiveWeekForDate(now);
-            const dayLessons = schedule[activeWeek]?.[dayNum] || [];
-            const liveCard = document.getElementById('live-status-card');
-            let activeLesson = null, nextLesson = null;
-
-            for (let l of dayLessons) {
-                const times = lessonTimes[l.num];
-                if (currentMin >= times.startMin && currentMin <= times.endMin) { activeLesson = { ...l, times }; break; }
-                if (currentMin < times.startMin && !nextLesson) { nextLesson = { ...l, times }; }
-            }
-
-            if (activeLesson) {
-                liveCard.classList.remove('hidden');
-                document.getElementById('live-status-title').innerText = `ИДЕТ ${activeLesson.num} ПАРА`;
-                document.getElementById('live-status-sub').innerText = activeLesson.subject;
-                document.getElementById('live-timer-badge').innerText = `осталось ${activeLesson.times.endMin - currentMin} мин`;
-            } else if (nextLesson && (nextLesson.times.startMin - currentMin) <= 45) {
-                liveCard.classList.remove('hidden');
-                document.getElementById('live-status-title').innerText = `СЛЕДУЮЩАЯ ${nextLesson.num} ПАРА`;
-                document.getElementById('live-status-sub').innerText = nextLesson.subject;
-                document.getElementById('live-timer-badge').innerText = `через ${nextLesson.times.startMin - currentMin} мин`;
-            } else {
-                liveCard.classList.add('hidden');
-            }
-        }
-
-        function copyToWhatsApp() {
-            const activeWeek = getActiveWeekForDate(todayDate);
-            let text = `📅 РАСПИСАНИЕ 1ТИС-2-26 (${activeWeek}-я неделя)\n\n`;
-            const sched = schedule[activeWeek];
-            for (let day = 1; day <= 5; day++) {
-                text += `📌 ${daysNames[day]}\n`;
-                (sched?.[day] || []).forEach(l => {
-                    text += ` * ${l.subject} (${l.teacher})\n`;
-                });
-                text += `\n`;
-            }
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text.trim();
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-            showToast("Расписание скопировано!");
-        }
-
-        function showToast(msg) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = msg;
-            toast.classList.remove('opacity-0');
-            setTimeout(() => toast.classList.add('opacity-0'), 2500);
-        }
-    </script>
-</body>
-</html>
+const schedule = {
+  1: {
+    1: [
+      { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
+      { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
+      { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
+      { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
+    ],
+    2: [
+      { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
+      { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
+      { num: 3, subject: "НВП", teacher: "Бердіқұл Б.А." },
+      { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
+    ],
+    3: [
+      { num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
+      { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
+      { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
+      { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
+    ],
+    4: [
+      { num: 1, subject: "Химия", teacher: "Жүніс У.Х." },
+      { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
+      { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
+    ],
+    5: [
+      { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
+      { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
+      { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
+    ]
+  },
+  2: {
+    1: [
+      { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
+      { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
+      { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
+      { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
+    ],
+    2: [
+      { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
+      { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
+      { num: 3, subject: "Математика", teacher: "Ерғали А.Ә." },
+      { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
+    ],
+    3: [
+      { num: 1, subject: "Физика", teacher: "Жексенбина А.З." },
+      { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
+      { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
+      { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
+    ],
+    4: [
+      { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
+      { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
+      { num: 3, subject: "Русская литература", teacher: "Ибраева Н.Н." }
+    ],
+    5: [
+      { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
+      { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
+      { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
+    ]
+  }
+};
