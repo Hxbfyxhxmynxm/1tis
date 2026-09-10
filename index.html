@@ -157,10 +157,10 @@
                     <button onclick="cycleTheme()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold glass-card flex items-center gap-1 shadow-sm active:scale-95" title="Сменить тему">
                         <i class="fa-solid fa-palette text-sm"></i>
                     </button>
-                    <!-- Week Switcher Button -->
-                    <button id="week-toggle-btn" onclick="toggleWeekManual()" class="px-3 py-1.5 rounded-xl text-xs font-bold glass-card flex items-center gap-1.5 shadow-sm active:scale-95">
+                    <!-- Week Switcher Button (Auto / 1 / 2) -->
+                    <button id="week-toggle-btn" onclick="cycleWeekMode()" class="px-3 py-1.5 rounded-xl text-xs font-bold glass-card flex items-center gap-1.5 shadow-sm active:scale-95">
                         <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
-                        <span id="week-toggle-text">1-я неделя</span>
+                        <span id="week-toggle-text">Авто</span>
                     </button>
                 </div>
             </div>
@@ -334,7 +334,7 @@
 
         let currentGroup = localStorage.getItem('selected_group') || '1ТИС-2-26';
         let currentTheme = localStorage.getItem('selected_theme') || 'theme-dark';
-        let activeWeek = 1; 
+        let weekMode = localStorage.getItem('week_mode') || 'auto'; // 'auto', '1', '2'
         let currentView = 'today';
         const todayDate = new Date();
 
@@ -347,7 +347,11 @@
             return (weekNo % 2 === 1) ? 1 : 2;
         }
 
-        activeWeek = getAutoCalculatedWeek(todayDate);
+        function getActiveWeekForDate(date) {
+            if (weekMode === '1') return 1;
+            if (weekMode === '2') return 2;
+            return getAutoCalculatedWeek(date);
+        }
 
         window.onload = function() {
             applyTheme(currentTheme);
@@ -404,14 +408,21 @@
             currentTheme = themeName;
         }
 
-        function toggleWeekManual() {
-            activeWeek = activeWeek === 1 ? 2 : 1;
+        function cycleWeekMode() {
+            if (weekMode === 'auto') weekMode = '1';
+            else if (weekMode === '1') weekMode = '2';
+            else weekMode = 'auto';
+
+            localStorage.setItem('week_mode', weekMode);
             updateWeekToggleUI();
             setView(currentView);
         }
 
         function updateWeekToggleUI() {
-            document.getElementById('week-toggle-text').innerText = activeWeek === 1 ? "1-я неделя" : "2-я неделя";
+            let text = "Авто";
+            if (weekMode === '1') text = "1-я нед";
+            if (weekMode === '2') text = "2-я нед";
+            document.getElementById('week-toggle-text').innerText = text;
         }
 
         function setView(view) {
@@ -427,24 +438,27 @@
             const bannerSub = document.getElementById('view-subtitle');
 
             const sched = schedulesData[currentGroup] || schedulesData["1ТИС-2-26"];
+            const activeWeek = getActiveWeekForDate(todayDate);
 
             if (view === 'today') {
                 const dayOfWeek = todayDate.getDay();
                 bannerBadge.innerText = "СЕГОДНЯ";
                 bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${activeWeek}-я неделя (${activeWeek === 1 ? 'Числитель' : 'Знаменатель'}) • ${currentGroup}`;
+                bannerSub.innerText = `${activeWeek}-я неделя (${activeWeek === 1 ? 'Числитель' : 'Знаменатель'}) • ${currentGroup} [${weekMode.toUpperCase()}]`;
                 renderSingleDay(sched, activeWeek, dayOfWeek, container);
             } 
             else if (view === 'tomorrow') {
                 const tomorrowDate = new Date(todayDate);
                 tomorrowDate.setDate(tomorrowDate.getDate() + 1);
                 let tomorrowWeek = activeWeek;
-                if (todayDate.getDay() === 0) tomorrowWeek = activeWeek === 1 ? 2 : 1;
+                if (todayDate.getDay() === 0 && weekMode === 'auto') {
+                    tomorrowWeek = activeWeek === 1 ? 2 : 1;
+                }
 
                 const dayOfWeek = tomorrowDate.getDay();
                 bannerBadge.innerText = "ЗАВТРА";
                 bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${tomorrowWeek}-я неделя • ${currentGroup}`;
+                bannerSub.innerText = `${tomorrowWeek}-я неделя • ${currentGroup} [${weekMode.toUpperCase()}]`;
                 renderSingleDay(sched, tomorrowWeek, dayOfWeek, container);
             }
             else if (view === 'week1') {
@@ -524,6 +538,7 @@
             if (dayNum === 0 || dayNum === 6) return;
 
             const currentMin = now.getHours() * 60 + now.getMinutes();
+            const activeWeek = getActiveWeekForDate(now);
             const dayLessons = schedulesData[currentGroup]?.[activeWeek]?.[dayNum] || [];
             const liveCard = document.getElementById('live-status-card');
             let activeLesson = null, nextLesson = null;
@@ -550,10 +565,11 @@
         }
 
         function copyToWhatsApp() {
-            let text = `📅 *РАСПИСАНИЕ ${currentGroup}*\n\n`;
+            const activeWeek = getActiveWeekForDate(todayDate);
+            let text = `📅 *РАСПИСАНИЕ ${currentGroup}* (${activeWeek}-я неделя)\n\n`;
             const sched = schedulesData[currentGroup]?.[activeWeek];
             for (let day = 1; day <= 5; day++) {
-                text += `📌 *${daysNames[day].toUpperCase()}* (${activeWeek}-я неделя):\n`;
+                text += `📌 *${daysNames[day].toUpperCase()}*:\n`;
                 (sched?.[day] || []).forEach(l => {
                     const t = lessonTimes[l.num];
                     text += `${l.num}. ${l.subject} (${t.start}-${t.end})\n`;
