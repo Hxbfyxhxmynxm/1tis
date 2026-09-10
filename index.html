@@ -237,7 +237,7 @@
         };
 
         let currentTheme = localStorage.getItem('selected_theme') || 'theme-dark';
-        let weekMode = localStorage.getItem('week_mode') || '2'; // Default to week 2 as requested/verified
+        let weekMode = localStorage.getItem('week_mode') || 'auto';
         let currentView = 'today';
         const todayDate = new Date();
 
@@ -247,7 +247,9 @@
             d.setUTCDate(d.getUTCDate() + 4 - dayNum);
             const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
             const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-            return (weekNo % 2 === 1) ? 1 : 2;
+            
+            // Сдвиг недели, чтобы в режиме Авто сейчас точно определялась 2-я неделя
+            return ((weekNo + 1) % 2 === 0) ? 2 : 1;
         }
 
         function getActiveWeekForDate(date) {
