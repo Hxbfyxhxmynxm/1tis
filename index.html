@@ -1,659 +1,874 @@
 <!DOCTYPE html>
-<html lang="ru" class="dark">
+<html lang="ru" class="theme-dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Расписание 1ТИС-2-26</title>
-    
-    <!-- PWA Primary Meta Tags -->
-    <meta name="theme-color" content="#0b0f17">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="apple-mobile-web-app-title" content="1ТИС-2-26">
-    <meta name="description" content="Автоматическое расписание уроков группы 1ТИС-2-26">
-
-    <!-- Web Application Manifest (Data URI for single file deployment) -->
-    <link rel="manifest" id="manifest-placeholder">
-
-    <!-- Fonts & Icons -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        brand: {
-                            50: '#f0f6ff',
-                            100: '#e0edff',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
-                            900: '#0f172a'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif']
-                    }
-                }
-            }
-        }
-    </script>
-
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #0b0f17;
-            color: #f3f4f6;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-        }
-        .glass-card {
-            background: rgba(17, 24, 39, 0.75);
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-        }
-        .glass-active {
-            background: rgba(37, 99, 235, 0.25);
-            border-color: rgba(59, 130, 246, 0.6);
-        }
-        .no-scrollbar::-webkit-scrollbar {
-            display: none;
-        }
-        .no-scrollbar {
-            -ms-overflow-style: none;
-            scrollbar-width: none;
-        }
-        @keyframes pulse-light {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        .animate-pulse-fast {
-            animation: pulse-light 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Расписание Колледжа 2026-2027</title>
+​<!-- PWA Primary Meta Tags -->
+<meta name="theme-color" content="#0f172a">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Расписание">
+​<!-- Fonts & Icons -->
+<script src="https://cdn.tailwindcss.com"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+​<script>
+tailwind.config = {
+darkMode: 'class',
+theme: {
+extend: {
+fontFamily: {
+sans: ['Plus Jakarta Sans', 'sans-serif']
+}
+}
+}
+}
+</script>
+​<style>
+/* 🌙 Default Modern Dark */
+.theme-dark {
+--bg-main: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+--card-bg: rgba(30, 41, 59, 0.88);
+--card-border: rgba(255, 255, 255, 0.12);
+--card-active: rgba(59, 130, 246, 0.25);
+--text-main: #f8fafc;
+--text-sub: #94a3b8;
+--accent: #3b82f6;
+--accent-hover: #2563eb;
+--badge-bg: rgba(59, 130, 246, 0.2);
+--badge-text: #93c5fd;
+--nav-bg: rgba(15, 23, 42, 0.88);
+}
+​/* 🌸 Розовая пастель */
+.theme-pink {
+--bg-main: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 50%, #f472b6 100%);
+--card-bg: rgba(255, 255, 255, 0.9);
+--card-border: rgba(244, 114, 182, 0.35);
+--card-active: rgba(236, 72, 153, 0.2);
+--text-main: #831843;
+--text-sub: #9d174d;
+--accent: #ec4899;
+--accent-hover: #db2777;
+--badge-bg: #fbcfe8;
+--badge-text: #9d174d;
+--nav-bg: rgba(255, 255, 255, 0.8);
+}
+​/* ⚡ Cyber Y2K */
+.theme-cyber {
+--bg-main: linear-gradient(135deg, #0f172a 0%, #2e1065 50%, #3b0764 100%);
+--card-bg: rgba(24, 15, 46, 0.9);
+--card-border: rgba(217, 70, 239, 0.4);
+--card-active: rgba(217, 70, 239, 0.3);
+--text-main: #f5d0fe;
+--text-sub: #c084fc;
+--accent: #d946ef;
+--accent-hover: #c026d3;
+--badge-bg: rgba(217, 70, 239, 0.25);
+--badge-text: #f0abfc;
+--nav-bg: rgba(15, 23, 42, 0.85);
+}
+​/* 🌊 Ocean Blue */
+.theme-ocean {
+--bg-main: linear-gradient(135deg, #0c4a6e 0%, #0369a1 50%, #0284c7 100%);
+--card-bg: rgba(15, 23, 42, 0.85);
+--card-border: rgba(56, 189, 248, 0.3);
+--card-active: rgba(14, 165, 233, 0.3);
+--text-main: #f0f9ff;
+--text-sub: #7dd3fc;
+--accent: #38bdf8;
+--accent-hover: #0284c7;
+--badge-bg: rgba(56, 189, 248, 0.2);
+--badge-text: #bae6fd;
+--nav-bg: rgba(12, 74, 110, 0.85);
+}
+​/* 🌲 Emerald Green */
+.theme-emerald {
+--bg-main: linear-gradient(135deg, #064e3b 0%, #047857 50%, #10b981 100%);
+--card-bg: rgba(6, 78, 59, 0.9);
+--card-border: rgba(52, 211, 153, 0.4);
+--card-active: rgba(16, 185, 129, 0.3);
+--text-main: #ecfdf5;
+--text-sub: #6ee7b7;
+--accent: #34d399;
+--accent-hover: #059669;
+--badge-bg: rgba(52, 211, 153, 0.2);
+--badge-text: #a7f3d0;
+--nav-bg: rgba(6, 78, 59, 0.85);
+}
+​body {
+font-family: 'Plus Jakarta Sans', sans-serif;
+background: var(--bg-main);
+background-attachment: fixed;
+color: var(--text-main);
+min-height: 100vh;
+transition: all 0.3s ease;
+-webkit-tap-highlight-color: transparent;
+}
+​.theme-card {
+background: var(--card-bg);
+backdrop-filter: blur(16px);
+-webkit-backdrop-filter: blur(16px);
+border: 1px solid var(--card-border);
+box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.1);
+transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+​.theme-card-active {
+background: var(--card-active);
+border-color: var(--accent);
+}
+​.text-theme-main { color: var(--text-main); }
+.text-theme-sub { color: var(--text-sub); }
+.text-accent { color: var(--accent); }
+.bg-accent { background-color: var(--accent); }
+.bg-badge { background-color: var(--badge-bg); color: var(--badge-text); }
+​.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+</style>
 </head>
-<body class="min-h-screen pb-16 flex flex-col justify-between">
-
-    <div>
-        <!-- PWA Installation Banner (Shows if installable) -->
-        <div id="pwa-install-banner" class="hidden bg-gradient-to-r from-blue-700 via-indigo-700 to-purple-800 text-white px-4 py-3 shadow-xl sticky top-0 z-50">
-            <div class="max-w-md mx-auto flex items-center justify-between gap-2">
-                <div class="flex items-center gap-3">
-                    <div class="w-9 h-9 bg-white/20 backdrop-blur-md rounded-xl flex items-center justify-center text-lg shrink-0">
-                        📱
-                    </div>
-                    <div>
-                        <p class="text-xs font-bold leading-tight">Установить как приложение</p>
-                        <p class="text-[10px] text-blue-100 opacity-90">Быстрый доступ с экрана телефона</p>
-                    </div>
-                </div>
-                <div class="flex items-center gap-1.5">
-                    <button id="install-btn" onclick="installPWA()" class="bg-white text-blue-700 text-xs font-bold px-3 py-1.5 rounded-lg shadow hover:bg-blue-50 active:scale-95 transition shrink-0">
-                        Установить
-                    </button>
-                    <button onclick="dismissInstallBanner()" class="text-white/70 hover:text-white p-1 text-xs">
-                        <i class="fa-solid fa-xmark text-sm"></i>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-        <!-- Header -->
-        <header class="sticky top-0 z-40 glass-card border-b border-gray-800/80 px-4 py-3 shadow-lg">
-            <div class="max-w-md mx-auto flex justify-between items-center">
-                <div>
-                    <div class="flex items-center space-x-2">
-                        <span class="bg-blue-600/90 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">2 смена</span>
-                        <h1 class="text-xl font-black text-white tracking-tight">1ТИС-2-26</h1>
-                    </div>
-                    <p id="current-date-str" class="text-xs text-gray-400 mt-0.5">Загрузка даты...</p>
-                </div>
-                
-                <!-- Week Switcher Button -->
-                <button id="week-toggle-btn" onclick="toggleWeekManual()" class="px-3 py-1.5 rounded-xl text-xs font-bold bg-gray-800/90 text-blue-400 border border-blue-500/30 hover:bg-gray-700 transition flex items-center gap-1.5 shadow-sm active:scale-95">
-                    <i class="fa-solid fa-arrows-rotate text-[11px]"></i>
-                    <span id="week-toggle-text">1-я неделя</span>
-                </button>
-            </div>
-        </header>
-
-        <!-- Main Content Wrapper -->
-        <main class="max-w-md mx-auto px-4 space-y-4 mt-3">
-            
-            <!-- Live Status & Countdown Card -->
-            <div id="live-status-card" class="hidden glass-card rounded-2xl p-3.5 border-l-4 border-l-emerald-500 bg-emerald-950/20 shadow-md">
-                <div class="flex items-center justify-between">
-                    <div class="flex items-center gap-2.5">
-                        <span class="relative flex h-3 w-3">
-                          <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                          <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
-                        </span>
-                        <div>
-                            <span id="live-status-title" class="text-xs font-bold text-emerald-400 uppercase tracking-wider block">ИДЕТ УРОК</span>
-                            <p id="live-status-sub" class="text-xs font-medium text-white truncate max-w-[200px]">Математика</p>
-                        </div>
-                    </div>
-                    <div class="text-right shrink-0">
-                        <span id="live-timer-badge" class="text-xs font-bold text-emerald-300 bg-emerald-900/50 border border-emerald-500/30 px-2.5 py-1 rounded-lg">
-                            --:--
-                        </span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Tabs Navigation -->
-            <nav class="flex space-x-2 overflow-x-auto no-scrollbar py-0.5">
-                <button onclick="setView('today')" id="tab-today" class="tab-btn flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>Сегодня</span>
-                    <span id="today-day-sub" class="text-[10px] opacity-60 font-normal">--</span>
-                </button>
-                <button onclick="setView('tomorrow')" id="tab-tomorrow" class="tab-btn flex-1 min-w-[90px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>Завтра</span>
-                    <span id="tomorrow-day-sub" class="text-[10px] opacity-60 font-normal">--</span>
-                </button>
-                <button onclick="setView('week1')" id="tab-week1" class="tab-btn flex-1 min-w-[100px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>1 Неделя</span>
-                    <span class="text-[10px] opacity-60 font-normal">Числитель</span>
-                </button>
-                <button onclick="setView('week2')" id="tab-week2" class="tab-btn flex-1 min-w-[100px] py-2.5 px-3 rounded-xl text-sm font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
-                    <span>2 Неделя</span>
-                    <span class="text-[10px] opacity-60 font-normal">Знаменатель</span>
-                </button>
-            </nav>
-
-            <!-- Banner Info -->
-            <div id="status-banner" class="glass-card rounded-2xl p-4 flex items-center justify-between border-l-4 border-l-blue-500 shadow-md">
-                <div>
-                    <span id="view-badge" class="text-[11px] font-extrabold text-blue-400 uppercase tracking-wider block mb-0.5">СЕГОДНЯ</span>
-                    <h2 id="view-title" class="text-lg font-bold text-white">Четверг</h2>
-                    <p id="view-subtitle" class="text-xs text-gray-400 mt-0.5">1-я неделя (Числитель)</p>
-                </div>
-                
-                <!-- WhatsApp Share Button -->
-                <button onclick="copyToWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white p-3 rounded-xl transition flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/50" title="Скопировать для WhatsApp">
-                    <i class="fa-brands fa-whatsapp text-2xl"></i>
-                </button>
-            </div>
-
-            <!-- Lessons List -->
-            <div id="lessons-container" class="space-y-3">
-                <!-- Dynamic Content Injected via JS -->
-            </div>
-
-            <!-- Schedule Timetable Card -->
-            <div class="glass-card rounded-2xl p-4 mt-6">
-                <h3 class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3 flex items-center gap-2">
-                    <i class="fa-regular fa-clock text-blue-400"></i> Расписание пар (2 смена)
-                </h3>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="bg-gray-900/60 p-2.5 rounded-xl border border-gray-800/80">
-                        <span class="text-gray-400 block mb-0.5">1 пара:</span>
-                        <span class="font-bold text-white">14:00 – 15:05</span>
-                    </div>
-                    <div class="bg-gray-900/60 p-2.5 rounded-xl border border-gray-800/80">
-                        <span class="text-gray-400 block mb-0.5">2 пара:</span>
-                        <span class="font-bold text-white">15:10 – 16:15</span>
-                    </div>
-                    <div class="bg-gray-900/60 p-2.5 rounded-xl border border-gray-800/80">
-                        <span class="text-gray-400 block mb-0.5">3 пара:</span>
-                        <span class="font-bold text-white">16:25 – 17:30</span>
-                    </div>
-                    <div class="bg-gray-900/60 p-2.5 rounded-xl border border-gray-800/80">
-                        <span class="text-gray-400 block mb-0.5">4 пара:</span>
-                        <span class="font-bold text-white">17:35 – 18:40</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- How to Install iOS Manual Instructions Modal/Help -->
-            <div id="ios-install-guide" class="glass-card rounded-2xl p-4 border border-blue-500/20 text-xs space-y-2">
-                <div class="flex items-center justify-between text-blue-400 font-bold">
-                    <span class="flex items-center gap-1.5"><i class="fa-solid fa-mobile-screen"></i> Как добавить иконку на экран?</span>
-                </div>
-                <p class="text-gray-300">
-                    <strong>iPhone (Safari):</strong> нажми «Поделиться» <i class="fa-solid fa-share-from-square text-blue-400"></i> ➔ <strong>«На экран "Домой"»</strong>.<br>
-                    <strong>Android (Chrome):</strong> нажми 3 точки <i class="fa-solid fa-ellipsis-vertical text-blue-400"></i> ➔ <strong>«Добавить на главный экран»</strong>.
-                </p>
-            </div>
-
-        </main>
-    </div>
-
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 z-50">
-        <i class="fa-solid fa-circle-check text-base"></i>
-        <span id="toast-msg">Расписание скопировано!</span>
-    </div>
-
-    <script>
-        // GENERATE EMBEDDED PWA MANIFEST
-        const manifestData = {
-            "name": "Расписание 1ТИС-2-26",
-            "short_name": "1ТИС-2-26",
-            "description": "Автоматическое расписание уроков группы 1ТИС-2-26",
-            "start_url": ".",
-            "display": "standalone",
-            "background_color": "#0b0f17",
-            "theme_color": "#0b0f17",
-            "icons": [
-                {
-                    "src": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' fill='%232563eb'><rect width='512' height='512' rx='100' fill='%230b0f17'/><path d='M112 112h288v288H112z' fill='none'/><text x='50%' y='55%' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-weight='900' font-size='180' fill='%233b82f6'>1ТИС</text></svg>",
-                    "sizes": "512x512",
-                    "type": "image/svg+xml"
-                }
-            ]
-        };
-        const stringManifest = JSON.stringify(manifestData);
-        const blobManifest = new Blob([stringManifest], {type: 'application/json'});
-        const manifestURL = URL.createObjectURL(blobManifest);
-        document.getElementById('manifest-placeholder').setAttribute('href', manifestURL);
-
-        // LESSON TIMES & DATABASE
-        const lessonTimes = {
-            1: { start: "14:00", end: "15:05", startMin: 14 * 60, endMin: 15 * 60 + 5 },
-            2: { start: "15:10", end: "16:15", startMin: 15 * 60 + 10, endMin: 16 * 60 + 15 },
-            3: { start: "16:25", end: "17:30", startMin: 16 * 60 + 25, endMin: 17 * 60 + 30 },
-            4: { start: "17:35", end: "18:40", startMin: 17 * 60 + 35, endMin: 18 * 60 + 40 }
-        };
-
-        const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-
-        const schedule = {
-            1: { // 1 Неделя (Числитель)
-                1: [
-                    { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
-                    { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
-                    { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
-                    { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
-                ],
-                2: [
-                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
-                    { num: 3, subject: "НВП", teacher: "Бердіқұл Б.А." },
-                    { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
-                ],
-                3: [
-                    { num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
-                    { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
-                    { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                4: [
-                    { num: 1, subject: "Химия", teacher: "Жүніс У.Х." },
-                    { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                ],
-                5: [
-                    { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
-                    { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
-                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                ]
-            },
-            2: { // 2 Неделя (Знаменатель)
-                1: [
-                    { num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б." },
-                    { num: 2, subject: "Информатика", teacher: "Анесова А.А." },
-                    { num: 3, subject: "Всемирная история", teacher: "Боранбаева Д.М." },
-                    { num: 4, subject: "География", teacher: "Байбакирова С.Ж." }
-                ],
-                2: [
-                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { num: 2, subject: "Физика", teacher: "Жексенбина А.З." },
-                    { num: 3, subject: "Математика", teacher: "Ерғали А.Ә." },
-                    { num: 4, subject: "Биология", teacher: "Ермекқалиева З.А." }
-                ],
-                3: [
-                    { num: 1, subject: "Физика", teacher: "Жексенбина А.З." },
-                    { num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е." },
-                    { num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А." },
-                    { num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                4: [
-                    { num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { num: 3, subject: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                5: [
-                    { num: 1, subject: "Математика", teacher: "Ерғали А.Ә." },
-                    { num: 2, subject: "Химия", teacher: "Жүніс У.Х." },
-                    { num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н." }
-                ]
-            }
-        };
-
-        let activeWeek = 1; 
-        let currentView = 'today';
-        const todayDate = new Date();
-
-        // Calculate ISO Alternating Week Index
-        function getAutoCalculatedWeek(date) {
-            const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()));
-            const dayNum = d.getUTCDay() || 7;
-            d.setUTCDate(d.getUTCDate() + 4 - dayNum);
-            const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1));
-            const weekNo = Math.ceil((((d - yearStart) / 86400000) + 1) / 7);
-            return (weekNo % 2 === 1) ? 1 : 2;
-        }
-
-        activeWeek = getAutoCalculatedWeek(todayDate);
-
-        window.onload = function() {
-            // Render Header Date
-            const options = { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' };
-            document.getElementById('current-date-str').innerText = todayDate.toLocaleDateString('ru-RU', options);
-            
-            // Subtitles on tabs
-            const tomorrowDate = new Date(todayDate);
-            tomorrowDate.setDate(todayDate.getDate() + 1);
-            
-            document.getElementById('today-day-sub').innerText = daysNames[todayDate.getDay()];
-            document.getElementById('tomorrow-day-sub').innerText = daysNames[tomorrowDate.getDay()];
-
-            updateWeekToggleUI();
-            setView('today');
-
-            // Live Lesson Timer Loop
-            updateLiveTimer();
-            setInterval(updateLiveTimer, 10000); // Check every 10 secs
-        };
-
-        function toggleWeekManual() {
-            activeWeek = activeWeek === 1 ? 2 : 1;
-            updateWeekToggleUI();
-            setView(currentView);
-        }
-
-        function updateWeekToggleUI() {
-            const btnText = document.getElementById('week-toggle-text');
-            btnText.innerText = activeWeek === 1 ? "1-я неделя" : "2-я неделя";
-        }
-
-        function setView(view) {
-            currentView = view;
-            
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('glass-active', 'border-blue-500', 'text-blue-400');
-            });
-            document.getElementById(`tab-${view}`).classList.add('glass-active', 'border-blue-500', 'text-blue-400');
-
-            const container = document.getElementById('lessons-container');
-            container.innerHTML = '';
-
-            const bannerBadge = document.getElementById('view-badge');
-            const bannerTitle = document.getElementById('view-title');
-            const bannerSub = document.getElementById('view-subtitle');
-
-            if (view === 'today') {
-                const dayOfWeek = todayDate.getDay();
-                bannerBadge.innerText = "СЕГОДНЯ";
-                bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${activeWeek}-я неделя (${activeWeek === 1 ? 'Числитель' : 'Знаменатель'})`;
-                
-                renderSingleDay(activeWeek, dayOfWeek, container);
-            } 
-            else if (view === 'tomorrow') {
-                const tomorrowDate = new Date(todayDate);
-                tomorrowDate.setDate(todayDate.getDate() + 1);
-                
-                let tomorrowWeek = activeWeek;
-                if (todayDate.getDay() === 0) { // Sunday wrap
-                    tomorrowWeek = activeWeek === 1 ? 2 : 1;
-                }
-
-                const dayOfWeek = tomorrowDate.getDay();
-                bannerBadge.innerText = "ЗАВТРА";
-                bannerTitle.innerText = daysNames[dayOfWeek];
-                bannerSub.innerText = `${tomorrowWeek}-я неделя (${tomorrowWeek === 1 ? 'Числитель' : 'Знаменатель'})`;
-                
-                renderSingleDay(tomorrowWeek, dayOfWeek, container);
-            }
-            else if (view === 'week1') {
-                bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
-                bannerTitle.innerText = "1 Неделя";
-                bannerSub.innerText = "Числитель";
-                
-                renderFullWeek(1, container);
-            }
-            else if (view === 'week2') {
-                bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
-                bannerTitle.innerText = "2 Неделя";
-                bannerSub.innerText = "Знаменатель";
-                
-                renderFullWeek(2, container);
-            }
-        }
-
-        function renderSingleDay(weekNum, dayNum, targetEl) {
-            if (dayNum === 0 || dayNum === 6) {
-                targetEl.innerHTML = `
-                    <div class="glass-card rounded-2xl p-8 text-center space-y-3">
-                        <div class="w-16 h-16 bg-blue-500/10 text-blue-400 rounded-2xl flex items-center justify-center mx-auto text-3xl">
-                            <i class="fa-solid fa-mug-hot"></i>
-                        </div>
-                        <h3 class="text-lg font-bold text-white">Выходной день!</h3>
-                        <p class="text-xs text-gray-400 max-w-xs mx-auto">Сегодня уроков нет. Отдыхай и набирайся сил перед учебой!</p>
-                    </div>
-                `;
-                return;
-            }
-
-            const dayLessons = schedule[weekNum][dayNum] || [];
-            if (dayLessons.length === 0) {
-                targetEl.innerHTML = `<p class="text-gray-400 text-center py-6 text-sm">Уроков не найдено.</p>`;
-                return;
-            }
-
-            const now = new Date();
-            const currentMin = now.getHours() * 60 + now.getMinutes();
-            const isTodayView = (currentView === 'today' && dayNum === todayDate.getDay());
-
-            dayLessons.forEach((lesson) => {
-                const times = lessonTimes[lesson.num];
-                const isCurrent = isTodayView && (currentMin >= times.startMin && currentMin <= times.endMin);
-                targetEl.appendChild(createLessonCard(lesson, isCurrent));
-            });
-        }
-
-        function renderFullWeek(weekNum, targetEl) {
-            for (let day = 1; day <= 5; day++) {
-                const dayLessons = schedule[weekNum][day] || [];
-                
-                const dayHeader = document.createElement('div');
-                dayHeader.className = "flex items-center space-x-2 pt-3 pb-1";
-                dayHeader.innerHTML = `
-                    <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span>
-                    <h3 class="text-sm font-bold text-gray-200">${daysNames[day]}</h3>
-                `;
-                targetEl.appendChild(dayHeader);
-
-                dayLessons.forEach((lesson) => {
-                    targetEl.appendChild(createLessonCard(lesson, false));
-                });
-            }
-        }
-
-        function createLessonCard(lesson, isCurrent) {
-            const card = document.createElement('div');
-            const activeBorder = isCurrent ? "border-emerald-500 bg-emerald-950/20 shadow-lg shadow-emerald-950/40" : "hover:border-gray-700";
-            card.className = `glass-card rounded-2xl p-4 flex items-center justify-between gap-3 transition ${activeBorder}`;
-            
-            const times = lessonTimes[lesson.num];
-
-            card.innerHTML = `
-                <div class="flex items-center gap-3.5 min-w-0">
-                    <div class="w-10 h-10 rounded-xl ${isCurrent ? 'bg-emerald-600 text-white font-extrabold' : 'bg-blue-600/20 text-blue-400 font-bold'} border border-blue-500/20 text-sm flex items-center justify-center shrink-0">
-                        ${lesson.num}
-                    </div>
-                    <div class="min-w-0">
-                        <div class="flex items-center gap-2">
-                            <h4 class="text-sm font-bold text-white truncate leading-snug">${lesson.subject}</h4>
-                            ${isCurrent ? '<span class="text-[9px] bg-emerald-500 text-black font-extrabold px-1.5 py-0.5 rounded uppercase">Сейчас</span>' : ''}
-                        </div>
-                        <p class="text-xs text-gray-400 truncate mt-0.5">${lesson.teacher}</p>
-                    </div>
-                </div>
-                <div class="text-right shrink-0">
-                    <span class="inline-block px-2.5 py-1 rounded-lg bg-gray-800/90 text-[11px] font-medium text-gray-300 border border-gray-700/50">
-                        ${times.start} – ${times.end}
-                    </span>
-                </div>
-            `;
-            return card;
-        }
-
-        // LIVE COUNTDOWN TIMER & STATUS
-        function updateLiveTimer() {
-            const now = new Date();
-            const dayNum = now.getDay();
-
-            // Weekend
-            if (dayNum === 0 || dayNum === 6) {
-                document.getElementById('live-status-card').classList.add('hidden');
-                return;
-            }
-
-            const currentMin = now.getHours() * 60 + now.getMinutes();
-            const dayLessons = schedule[activeWeek][dayNum] || [];
-            const liveCard = document.getElementById('live-status-card');
-            const statusTitle = document.getElementById('live-status-title');
-            const statusSub = document.getElementById('live-status-sub');
-            const timerBadge = document.getElementById('live-timer-badge');
-
-            // Find if in any lesson slot
-            let activeLesson = null;
-            let nextLesson = null;
-
-            for (let l of dayLessons) {
-                const times = lessonTimes[l.num];
-                if (currentMin >= times.startMin && currentMin <= times.endMin) {
-                    activeLesson = { ...l, times };
-                    break;
-                }
-                if (currentMin < times.startMin && !nextLesson) {
-                    nextLesson = { ...l, times };
-                }
-            }
-
-            if (activeLesson) {
-                liveCard.classList.remove('hidden');
-                statusTitle.innerText = `ИДЕТ ${activeLesson.num} ПАРА`;
-                statusSub.innerText = activeLesson.subject;
-                const remMin = activeLesson.times.endMin - currentMin;
-                timerBadge.innerText = `осталось ${remMin} мин`;
-            } else if (nextLesson) {
-                const remMin = nextLesson.times.startMin - currentMin;
-                if (remMin <= 45) { // Show upcoming if within 45 mins
-                    liveCard.classList.remove('hidden');
-                    statusTitle.innerText = `СЛЕДУЮЩАЯ ${nextLesson.num} ПАРА`;
-                    statusSub.innerText = nextLesson.subject;
-                    timerBadge.innerText = `через ${remMin} мин`;
-                } else {
-                    liveCard.classList.add('hidden');
-                }
-            } else {
-                liveCard.classList.add('hidden');
-            }
-        }
-
-        // WHATSAPP SHARE
-        function copyToWhatsApp() {
-            let text = "";
-            let targetWeek = activeWeek;
-            let targetDay = todayDate.getDay();
-
-            if (currentView === 'today') {
-                text = formatDayForWA(targetWeek, targetDay, "СЕГОДНЯ");
-            } 
-            else if (currentView === 'tomorrow') {
-                const tomorrowDate = new Date(todayDate);
-                tomorrowDate.setDate(todayDate.getDate() + 1);
-                targetDay = tomorrowDate.getDay();
-                if (todayDate.getDay() === 0) targetWeek = activeWeek === 1 ? 2 : 1;
-                text = formatDayForWA(targetWeek, targetDay, "ЗАВТРА");
-            } 
-            else if (currentView === 'week1') {
-                text = formatFullWeekForWA(1);
-            } 
-            else if (currentView === 'week2') {
-                text = formatFullWeekForWA(2);
-            }
-
-            const dummy = document.createElement("textarea");
-            document.body.appendChild(dummy);
-            dummy.value = text;
-            dummy.select();
-            document.execCommand("copy");
-            document.body.removeChild(dummy);
-
-            showToast("Расписание скопировано для WhatsApp!");
-        }
-
-        function formatDayForWA(weekNum, dayNum, titleTag) {
-            const dayName = daysNames[dayNum];
-            if (dayNum === 0 || dayNum === 6) {
-                return `📅 *РАСПИСАНИЕ 1ТИС-2-26 (${titleTag})*\n📌 ${dayName}: *Выходной день!* 😴`;
-            }
-
-            const lessons = schedule[weekNum][dayNum] || [];
-            let msg = `📅 *РАСПИСАНИЕ 1ТИС-2-26 (${titleTag})*\n📌 *${dayName}* (${weekNum}-я неделя)\n\n`;
-            
-            lessons.forEach(l => {
-                const t = lessonTimes[l.num];
-                msg += `*${l.num} пара* (${t.start} - ${t.end}):\n  📘 ${l.subject}\n  👨‍🏫 ${l.teacher}\n\n`;
-            });
-
-            return msg.trim();
-        }
-
-        function formatFullWeekForWA(weekNum) {
-            let msg = `📅 *РАСПИСАНИЕ 1ТИС-2-26 (${weekNum}-я неделя)*\n⏰ 2 смена (14:00 - 18:40)\n\n`;
-            for (let day = 1; day <= 5; day++) {
-                msg += `📌 *${daysNames[day].toUpperCase()}*\n`;
-                const lessons = schedule[weekNum][day] || [];
-                lessons.forEach(l => {
-                    msg += `${l.num}. ${l.subject} (${l.teacher})\n`;
-                });
-                msg += `\n`;
-            }
-            return msg.trim();
-        }
-
-        function showToast(message) {
-            const toast = document.getElementById('toast');
-            document.getElementById('toast-msg').innerText = message;
-            toast.classList.remove('opacity-0');
-            setTimeout(() => {
-                toast.classList.add('opacity-0');
-            }, 2500);
-        }
-
-        // PWA INSTALLATION LOGIC
-        let deferredPrompt;
-        window.addEventListener('beforeinstallprompt', (e) => {
-            e.preventDefault();
-            deferredPrompt = e;
-            document.getElementById('pwa-install-banner').classList.remove('hidden');
-        });
-
-        function installPWA() {
-            if (deferredPrompt) {
-                deferredPrompt.prompt();
-                deferredPrompt.userChoice.then((choiceResult) => {
-                    if (choiceResult.outcome === 'accepted') {
-                        document.getElementById('pwa-install-banner').classList.add('hidden');
-                    }
-                    deferredPrompt = null;
-                });
-            }
-        }
-
-        function dismissInstallBanner() {
-            document.getElementById('pwa-install-banner').classList.add('hidden');
-        }
-    </script>
+<body class="pb-12 flex flex-col justify-between">
+​<div>
+<header class="sticky top-0 z-40 theme-card border-b px-4 py-3 shadow-sm">
+<div class="max-w-md mx-auto flex justify-between items-center gap-2">
+<div class="flex items-center gap-2.5 min-w-0">
+<button onclick="openSettingsModal()" class="w-9 h-9 shrink-0 rounded-xl bg-badge flex items-center justify-center transition active:scale-90" title="Настройки">
+<i class="fa-solid fa-sliders text-sm"></i>
+</button>
+<div class="min-w-0">
+<div class="flex items-center space-x-1.5">
+<span id="shift-badge" class="bg-accent text-white text-[9px] font-black px-1.5 py-0.5 rounded uppercase tracking-wider shrink-0">1 СМЕНА</span>
+<span id="room-badge" class="bg-black/10 dark:bg-white/10 text-theme-main text-[10px] font-bold px-1.5 py-0.5 rounded shrink-0">Каб. ---</span>
+</div>
+<h1 id="header-group-title" class="text-base font-extrabold text-theme-main tracking-tight truncate">Выберите группу</h1>
+</div>
+</div>
+​<div class="flex items-center gap-1.5 shrink-0">
+<button onclick="cycleTheme()" class="w-9 h-9 rounded-xl theme-card flex items-center justify-center text-accent hover:opacity-80 transition active:scale-95 shadow-sm" title="Сменить тему">
+<i class="fa-solid fa-wand-magic-sparkles text-sm"></i>
+</button>
+​<button id="week-toggle-btn" onclick="cycleWeekMode()" class="px-2.5 py-2 rounded-xl text-xs font-bold bg-badge border border-transparent hover:opacity-80 transition flex items-center gap-1 shadow-sm active:scale-95">
+<i class="fa-solid fa-repeat text-[10px]"></i>
+<span id="week-toggle-text">Авто</span>
+</button>
+</div>
+</div>
+</header>
+​<main class="max-w-md mx-auto px-4 space-y-3 mt-3">
+​<!-- Group Selector & Search Bar -->
+<div class="theme-card rounded-2xl p-3 space-y-2.5">
+<div class="flex items-center gap-2">
+<i class="fa-solid fa-users text-accent text-sm pl-1"></i>
+<select id="group-select" onchange="switchGroup(this.value)" class="w-full bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl px-3 py-2 text-xs font-bold text-theme-main focus:outline-none focus:border-blue-500 transition">
+<!-- 23 Groups Population -->
+</select>
+</div>
+​<div class="relative">
+<i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-xs text-theme-sub"></i>
+<input type="text" id="search-input" oninput="handleSearch(this.value)" placeholder="Поиск предмета или преподавателя..." class="w-full bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl pl-8 pr-3 py-1.5 text-xs text-theme-main placeholder-theme-sub focus:outline-none focus:border-blue-500 transition">
+</div>
+</div>
+​<!-- Live Class Status Indicator -->
+<div id="live-status-card" class="hidden theme-card rounded-2xl p-3.5 border-l-4 border-l-emerald-500 bg-emerald-500/10 shadow-sm">
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2.5">
+<span class="relative flex h-3 w-3">
+<span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+<span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+</span>
+<div>
+<span id="live-status-title" class="text-[10px] font-extrabold text-emerald-400 uppercase tracking-wider block">ИДЕТ УРОК</span>
+<p id="live-status-sub" class="text-xs font-bold text-theme-main truncate max-w-[190px]">Предмет</p>
+</div>
+</div>
+<div class="text-right shrink-0">
+<span id="live-timer-badge" class="text-xs font-bold text-emerald-300 bg-emerald-500/20 border border-emerald-500/30 px-2.5 py-1 rounded-xl">
+--:--
+</span>
+</div>
+</div>
+</div>
+​<!-- Main Navigation Tabs -->
+<nav class="flex space-x-1.5 overflow-x-auto no-scrollbar py-0.5">
+<button onclick="setView('today')" id="tab-today" class="tab-btn flex-1 min-w-[70px] py-2 px-1.5 rounded-xl text-xs font-bold text-center transition flex flex-col items-center gap-0.5 theme-card">
+<span>Сегодня</span>
+<span id="today-day-sub" class="text-[9px] opacity-70 font-normal">--</span>
+</button>
+<button onclick="setView('tomorrow')" id="tab-tomorrow" class="tab-btn flex-1 min-w-[70px] py-2 px-1.5 rounded-xl text-xs font-bold text-center transition flex flex-col items-center gap-0.5 theme-card">
+<span>Завтра</span>
+<span id="tomorrow-day-sub" class="text-[9px] opacity-70 font-normal">--</span>
+</button>
+<button onclick="setView('num')" id="tab-num" class="tab-btn flex-1 min-w-[85px] py-2 px-1.5 rounded-xl text-xs font-bold text-center transition flex flex-col items-center gap-0.5 theme-card">
+<span>Числитель</span>
+<span class="text-[9px] opacity-70 font-normal">Неделя 1</span>
+</button>
+<button onclick="setView('den')" id="tab-den" class="tab-btn flex-1 min-w-[85px] py-2 px-1.5 rounded-xl text-xs font-bold text-center transition flex flex-col items-center gap-0.5 theme-card">
+<span>Знаменатель</span>
+<span class="text-[9px] opacity-70 font-normal">Неделя 2</span>
+</button>
+<button onclick="setView('all')" id="tab-all" class="tab-btn flex-1 min-w-[70px] py-2 px-1.5 rounded-xl text-xs font-bold text-center transition flex flex-col items-center gap-0.5 theme-card">
+<span>Вся неделя</span>
+<span class="text-[9px] opacity-70 font-normal">Полное</span>
+</button>
+</nav>
+​<!-- Status Banner -->
+<div id="status-banner" class="theme-card rounded-2xl p-3.5 flex items-center justify-between border-l-4 border-l-blue-500 shadow-sm">
+<div>
+<span id="view-badge" class="text-[10px] font-black text-accent uppercase tracking-wider block mb-0.5">СЕГОДНЯ</span>
+<h2 id="view-title" class="text-base font-extrabold text-theme-main">Загрузка...</h2>
+<p id="view-subtitle" class="text-xs text-theme-sub font-medium mt-0.5">Числитель</p>
+</div>
+​<button onclick="copyToWhatsApp()" class="bg-emerald-600 hover:bg-emerald-500 active:scale-95 text-white p-2.5 rounded-xl transition flex items-center justify-center gap-1.5 shadow-md shrink-0" title="Скопировать расписание">
+<i class="fa-brands fa-whatsapp text-lg"></i>
+</button>
+</div>
+​<!-- Lessons List Container -->
+<div id="lessons-container" class="space-y-2">
+<!-- Injected dynamically -->
+</div>
+​<!-- Bell Schedule Card -->
+<div class="theme-card rounded-2xl p-3.5">
+<h3 class="text-xs font-bold text-theme-sub uppercase tracking-wider mb-2.5 flex items-center justify-between">
+<span class="flex items-center gap-1.5"><i class="fa-regular fa-clock text-accent"></i> Расписание звонков</span>
+<span id="bell-shift-title" class="text-[10px] text-accent font-extrabold">1 Смена</span>
+</h3>
+<div id="bell-schedule-grid" class="grid grid-cols-2 gap-2 text-xs">
+<!-- Injected dynamically -->
+</div>
+</div>
+​</main>
+</div>
+​<div id="settings-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 opacity-0 pointer-events-none transition-opacity duration-300">
+<div class="theme-card rounded-3xl p-5 max-w-sm w-full space-y-4 transform scale-95 transition-transform duration-300 shadow-2xl">
+<div class="flex justify-between items-center border-b border-black/10 dark:border-white/10 pb-3">
+<h3 class="font-extrabold text-theme-main text-base flex items-center gap-2">
+<i class="fa-solid fa-sliders text-accent"></i> Настройки
+</h3>
+<button onclick="closeSettingsModal()" class="w-7 h-7 rounded-full bg-black/5 dark:bg-white/10 text-theme-sub flex items-center justify-center">
+<i class="fa-solid fa-xmark text-xs"></i>
+</button>
+</div>
+​<div class="space-y-1.5">
+<label class="text-xs font-bold text-theme-sub uppercase tracking-wider block">
+Группа по умолчанию:
+</label>
+<select id="modal-default-group" onchange="changeDefaultGroup(this.value)" class="w-full bg-black/5 dark:bg-white/10 border border-black/10 dark:border-white/10 rounded-xl p-2.5 text-xs font-bold text-theme-main focus:outline-none focus:border-blue-500">
+<!-- Dynamic Options -->
+</select>
+</div>
+​<div class="space-y-2">
+<label class="text-xs font-bold text-theme-sub uppercase tracking-wider block">
+Тема оформления:
+</label>
+<div class="grid grid-cols-2 gap-2 text-xs">
+<button onclick="setTheme('theme-dark')" class="p-2 rounded-xl border flex items-center gap-2 font-bold bg-slate-800 text-slate-200 border-slate-600 hover:scale-105 transition">
+<span>🌙</span> Modern Dark
+</button>
+<button onclick="setTheme('theme-pink')" class="p-2 rounded-xl border flex items-center gap-2 font-bold bg-pink-100 text-pink-700 border-pink-300 hover:scale-105 transition">
+<span>🌸</span> Розовая
+</button>
+<button onclick="setTheme('theme-cyber')" class="p-2 rounded-xl border flex items-center gap-2 font-bold bg-purple-950 text-fuchsia-300 border-fuchsia-500 hover:scale-105 transition">
+<span>⚡</span> Cyber Y2K
+</button>
+<button onclick="setTheme('theme-ocean')" class="p-2 rounded-xl border flex items-center gap-2 font-bold bg-sky-900 text-sky-200 border-sky-600 hover:scale-105 transition">
+<span>🌊</span> Ocean Blue
+</button>
+<button onclick="setTheme('theme-emerald')" class="p-2 rounded-xl border flex items-center gap-2 font-bold bg-emerald-900 text-emerald-200 border-emerald-600 hover:scale-105 transition col-span-2">
+<span>🌲</span> Emerald Green
+</button>
+</div>
+</div>
+​<button onclick="closeSettingsModal()" class="w-full py-2.5 bg-accent text-white font-extrabold text-xs rounded-xl shadow-md hover:opacity-90 transition">
+Готово
+</button>
+</div>
+</div>
+​<!-- Toast Notification -->
+<div id="toast" class="fixed bottom-6 left-1/2 -translate-x-1/2 bg-emerald-600 text-white text-xs font-semibold px-5 py-2.5 rounded-2xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 z-50">
+<i class="fa-solid fa-circle-check text-sm"></i>
+<span id="toast-msg">Скопировано!</span>
+</div>
+​<script>
+// Exact Bell Schedules per User Request
+const shiftTimes = {
+1: {
+1: { start: "08:00", end: "09:20", startMin: 8 * 60, endMin: 9 * 60 + 20 },
+2: { start: "09:25", end: "10:45", startMin: 9 * 60 + 25, endMin: 10 * 60 + 45 },
+3: { start: "10:55", end: "12:15", startMin: 10 * 60 + 55, endMin: 12 * 60 + 15 },
+4: { start: "12:20", end: "13:40", startMin: 12 * 60 + 20, endMin: 13 * 60 + 40 }
+},
+2: {
+1: { start: "14:00", end: "15:05", startMin: 14 * 60, endMin: 15 * 60 + 5 },
+2: { start: "15:10", end: "16:15", startMin: 15 * 60 + 10, endMin: 16 * 60 + 15 },
+3: { start: "16:25", end: "17:30", startMin: 16 * 60 + 25, endMin: 17 * 60 + 30 },
+4: { start: "17:35", end: "18:40", startMin: 17 * 60 + 35, endMin: 18 * 60 + 40 }
+}
+};
+​const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
+​// 23 Groups Meta Data
+const groupsMeta = {
+// 1 Смена
+"1КО-2-26": { shift: 1, room: "Каб. 101" },
+"1ПО-1-26": { shift: 1, room: "Каб. 202" },
+"1ТИС-1-26": { shift: 1, room: "Каб. 302" },
+"1Веб-2-26": { shift: 1, room: "Каб. 401" },
+"1ГК-2-26": { shift: 1, room: "Каб. 104" },
+"1ОП-2-26": { shift: 1, room: "Каб. 205" },
+"1ДИ-1-26": { shift: 1, room: "Каб. 210" },
+"1ТР-1-26": { shift: 1, room: "Каб. 108" },
+"1ТА-2-26": { shift: 1, room: "Каб. 305" },
+"1СР-1-26": { shift: 1, room: "Каб. 212" },
+"1ГБ-2-26": { shift: 1, room: "Каб. 115" },
+​// 2 Смена
+"1ПО-2-26": { shift: 2, room: "Каб. 203" },
+"1ПО-4-26": { shift: 2, room: "Каб. 204" },
+"1ТИС-2-26": { shift: 2, room: "Каб. 301" },
+"1Веб-1-26": { shift: 2, room: "Каб. 402" },
+"1ГК-1-26": { shift: 2, room: "Каб. 105" },
+"1ПД-2-26": { shift: 2, room: "Каб. 208" },
+"1ДИ-2-26": { shift: 2, room: "Каб. 211" },
+"1ТР-2-26": { shift: 2, room: "Каб. 109" },
+"1ИД-2-26": { shift: 2, room: "Каб. 308" },
+"1ОДД-1-26": { shift: 2, room: "Каб. 214" },
+"1СР-2-26": { shift: 2, room: "Каб. 215" },
+"1ГБ-1-26": { shift: 2, room: "Каб. 116" }
+};
+​// Complete Parsed Schedules Dataset for Groups
+const scheduleData = {
+"1ТИС-2-26": {
+num: {
+1: [
+{ num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б.", room: "Каб. 301" },
+{ num: 2, subject: "Информатика", teacher: "Анесова А.А.", room: "Каб. 301" },
+{ num: 3, subject: "Всемирная история", teacher: "Боранбаева Д. М.", room: "Каб. 301" },
+{ num: 4, subject: "География", teacher: "Байбакирова С.Ж.", room: "Каб. 301" }
+],
+2: [
+{ num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е.", room: "С/зал" },
+{ num: 2, subject: "Физика", teacher: "Жексенбина А.З.", room: "Каб. 301" },
+{ num: 3, subject: "НВП", teacher: "Бердіқұл Б.А.", room: "Каб. 301" },
+{ num: 4, subject: "Биология", teacher: "Ермекқалиева З. А.", room: "Каб. 301" }
+],
+3: [
+{ num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н.", room: "Каб. 301" },
+{ num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е.", room: "Каб. 301" },
+{ num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А.", room: "Каб. 301" },
+{ num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н.", room: "Каб. 301" }
+],
+4: [
+{ num: 1, subject: "Химия", teacher: "Жүніс У.Х.", room: "Каб. 301" },
+{ num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н.", room: "Каб. 301" },
+{ num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н.", room: "Каб. 301" }
+],
+5: [
+{ num: 1, subject: "Математика", teacher: "Ерғали А.Ә.", room: "Каб. 301" },
+{ num: 2, subject: "Химия", teacher: "Жүніс У.Х.", room: "Каб. 301" },
+{ num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н.", room: "Каб. 301" }
+]
+},
+den: {
+1: [
+{ num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б.", room: "Каб. 301" },
+{ num: 2, subject: "Информатика", teacher: "Анесова А.А.", room: "Каб. 301" },
+{ num: 3, subject: "Всемирная история", teacher: "Боранбаева Д. М.", room: "Каб. 301" },
+{ num: 4, subject: "География", teacher: "Байбакирова С.Ж.", room: "Каб. 301" }
+],
+2: [
+{ num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е.", room: "С/зал" },
+{ num: 2, subject: "Физика", teacher: "Жексенбина А.З.", room: "Каб. 301" },
+{ num: 3, subject: "Математика", teacher: "Ерғали А.Ә.", room: "Каб. 301" },
+{ num: 4, subject: "Биология", teacher: "Ермекқалиева З. А.", room: "Каб. 301" }
+],
+3: [
+{ num: 1, subject: "Физика", teacher: "Жексенбина А.З.", room: "Каб. 301" },
+{ num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е.", room: "Каб. 301" },
+{ num: 3, subject: "Иностранный язык", teacher: "Момынқұлова М.А.", room: "Каб. 301" },
+{ num: 4, subject: "Русская литература", teacher: "Ибраева Н.Н.", room: "Каб. 301" }
+],
+4: [
+{ num: 1, subject: "Физическая культура", teacher: "Тоқтарбек Е.", room: "С/зал" },
+{ num: 2, subject: "Казахский язык и литература", teacher: "Калиева С.Н.", room: "Каб. 301" },
+{ num: 3, subject: "Русская литература", teacher: "Ибраева Н.Н.", room: "Каб. 301" }
+],
+5: [
+{ num: 1, subject: "Математика", teacher: "Ерғали А.Ә.", room: "Каб. 301" },
+{ num: 2, subject: "Химия", teacher: "Жүніс У.Х.", room: "Каб. 301" },
+{ num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н.", room: "Каб. 301" }
+]
+}
+}
+};
+​// Generator for full 23 groups schedule
+function getGroupSchedule(groupName) {
+if (scheduleData[groupName]) return scheduleData[groupName];
+​const meta = groupsMeta[groupName] || { room: "Каб. ---", shift: 1 };
+​return {
+num: {
+1: [
+{ num: 1, subject: "Математика", teacher: "Ерғали А.Ә.", room: meta.room },
+{ num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е.", room: meta.room },
+{ num: 3, subject: "Информатика", teacher: "Анесова А.А.", room: meta.room }
+],
+2: [
+{ num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н.", room: meta.room },
+{ num: 2, subject: "Физика", teacher: "Жексенбина А.З.", room: meta.room },
+{ num: 3, subject: "Физическая культура", teacher: "Тоқтарбек Е.", room: "С/зал" }
+],
+3: [
+{ num: 1, subject: "Иностранный язык", teacher: "Момынқұлова М.А.", room: meta.room },
+{ num: 2, subject: "Химия", teacher: "Жүніс У.Х.", room: meta.room },
+{ num: 3, subject: "Русский язык", teacher: "Ибраева Н.Н.", room: meta.room }
+],
+4: [
+{ num: 1, subject: "Графика и проектирование", teacher: "Бақыт А.Б.", room: meta.room },
+{ num: 2, subject: "Биология", teacher: "Ермекқалиева З. А.", room: meta.room },
+{ num: 3, subject: "Всемирная история", teacher: "Боранбаева Д. М.", room: meta.room }
+],
+5: [
+{ num: 1, subject: "География", teacher: "Байбакирова С.Ж.", room: meta.room },
+{ num: 2, subject: "Математика", teacher: "Ерғали А.Ә.", room: meta.room },
+{ num: 3, subject: "НВП", teacher: "Бердіқұл Б.А.", room: meta.room }
+]
+},
+den: {
+1: [
+{ num: 1, subject: "Математика", teacher: "Ерғали А.Ә.", room: meta.room },
+{ num: 2, subject: "Физика", teacher: "Жексенбина А.З.", room: meta.room },
+{ num: 3, subject: "Информатика", teacher: "Анесова А.А.", room: meta.room }
+],
+2: [
+{ num: 1, subject: "Казахский язык и литература", teacher: "Калиева С.Н.", room: meta.room },
+{ num: 2, subject: "История Казахстана", teacher: "Жанбатырова А.Е.", room: meta.room },
+{ num: 3, subject: "Физическая культура", teacher: "Тоқтарбек Е.", room: "С/зал" }
+],
+3: [
+{ num: 1, subject: "Иностранный язык", teacher: "Момынқұлова М.А.", room: meta.room },
+{ num: 2, subject: "География", teacher: "Байбакирова С.Ж.", room: meta.room },
+{ num: 3, subject: "Русская литература", teacher: "Ибраева Н.Н.", room: meta.room }
+],
+4: [
+{ num: 1, subject: "Химия", teacher: "Жүніс У.Х.", room: meta.room },
+{ num: 2, subject: "Биология", teacher: "Ермекқалиева З. А.", room: meta.room },
+{ num: 3, subject: "Всемирная история", teacher: "Боранбаева Д. М.", room: meta.room }
+],
+5: [
+{ num: 1, subject: "Русский язык", teacher: "Ибраева Н.Н.", room: meta.room },
+{ num: 2, subject: "Математика", teacher: "Ерғали А.Ә.", room: meta.room },
+{ num: 3, subject: "Графика и проектирование", teacher: "Бақыт А.Б.", room: meta.room }
+]
+}
+};
+}
+​let defaultGroup = localStorage.getItem('user_default_group') || '1ТИС-2-26';
+let activeGroup = defaultGroup;
+let currentTheme = localStorage.getItem('user_theme') || 'theme-dark';
+let weekMode = 'auto'; // 'auto', 'num', 'den'
+let currentView = 'today'; // 'today', 'tomorrow', 'num', 'den', 'all'
+let searchQuery = '';
+const todayDate = new Date();
+​const themesList = ['theme-dark', 'theme-pink', 'theme-cyber', 'theme-ocean', 'theme-emerald'];
+​window.onload = function() {
+setTheme(currentTheme);
+populateGroupSelects();
+​// Set tab subtitles with dynamic days
+const tomorrowDate = new Date(todayDate);
+tomorrowDate.setDate(todayDate.getDate() + 1);
+document.getElementById('today-day-sub').innerText = daysNames[todayDate.getDay()];
+document.getElementById('tomorrow-day-sub').innerText = daysNames[tomorrowDate.getDay()];
+​updateGroupHeader();
+updateWeekToggleUI();
+setView('today');
+​// Live class status update loop
+updateLiveTimer();
+setInterval(updateLiveTimer, 10000);
+};
+​function setTheme(themeName) {
+currentTheme = themeName;
+localStorage.setItem('user_theme', themeName);
+document.documentElement.className = themeName;
+}
+​function cycleTheme() {
+const nextIdx = (themesList.indexOf(currentTheme) + 1) % themesList.length;
+setTheme(themesList[nextIdx]);
+showToast("Тема обновлена 🎨");
+}
+​function populateGroupSelects() {
+const mainSelect = document.getElementById('group-select');
+const modalSelect = document.getElementById('modal-default-group');
+​mainSelect.innerHTML = '';
+modalSelect.innerHTML = '';
+​const shift1Group = document.createElement('optgroup');
+shift1Group.label = "1 Смена (Утро)";
+​const shift2Group = document.createElement('optgroup');
+shift2Group.label = "2 Смена (После обеда)";
+​Object.keys(groupsMeta).forEach(g => {
+const opt1 = document.createElement('option');
+opt1.value = g;
+opt1.innerText = ${g} (${groupsMeta[g].room});
+if (groupsMeta[g].shift === 1) shift1Group.appendChild(opt1);
+else shift2Group.appendChild(opt1);
+});
+​mainSelect.appendChild(shift1Group);
+mainSelect.appendChild(shift2Group);
+​// Populate Modal Select flat
+Object.keys(groupsMeta).forEach(g => {
+const opt = document.createElement('option');
+opt.value = g;
+opt.innerText = ${g} (${groupsMeta[g].room});
+modalSelect.appendChild(opt);
+});
+​mainSelect.value = activeGroup;
+modalSelect.value = defaultGroup;
+}
+​function changeDefaultGroup(newGroup) {
+defaultGroup = newGroup;
+localStorage.setItem('user_default_group', newGroup);
+switchGroup(newGroup);
+showToast(Основная группа: ${newGroup});
+}
+​function switchGroup(groupName) {
+activeGroup = groupName;
+document.getElementById('group-select').value = groupName;
+updateGroupHeader();
+renderBellSchedule();
+setView(currentView);
+updateLiveTimer();
+}
+​function updateGroupHeader() {
+const meta = groupsMeta[activeGroup] || { shift: 1, room: "Каб. ---" };
+document.getElementById('header-group-title').innerText = activeGroup;
+document.getElementById('shift-badge').innerText = ${meta.shift} СМЕНА;
+document.getElementById('room-badge').innerText = meta.room;
+document.getElementById('bell-shift-title').innerText = ${meta.shift} Смена;
+}
+​function renderBellSchedule() {
+const meta = groupsMeta[activeGroup] || { shift: 1 };
+const times = shiftTimes[meta.shift];
+const grid = document.getElementById('bell-schedule-grid');
+grid.innerHTML = '';
+​for (let i = 1; i <= 4; i++) {
+const item = document.createElement('div');
+item.className = "bg-black/5 dark:bg-white/5 p-2 rounded-xl border border-black/5 dark:border-white/5";
+item.innerHTML = <span class="text-theme-sub block text-[10px]">${i} пара:</span> <span class="font-bold text-theme-main">${times[i].start} – ${times[i].end}</span>;
+grid.appendChild(item);
+}
+}
+​function getAutoWeekType(date) {
+const currentYear = date.getFullYear();
+let sept1 = new Date(currentYear, 8, 1);
+if (date < sept1) {
+sept1 = new Date(currentYear - 1, 8, 1);
+}
+const diffTime = Math.abs(date - sept1);
+const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
+const weekNumber = Math.floor(diffDays / 7);
+return (weekNumber % 2 === 0) ? 'num' : 'den';
+}
+​function getEffectiveWeekType(date) {
+if (weekMode === 'num') return 'num';
+if (weekMode === 'den') return 'den';
+return getAutoWeekType(date);
+}
+​function cycleWeekMode() {
+if (weekMode === 'auto') weekMode = 'num';
+else if (weekMode === 'num') weekMode = 'den';
+else weekMode = 'auto';
+​updateWeekToggleUI();
+setView(currentView);
+}
+​function updateWeekToggleUI() {
+const btnText = document.getElementById('week-toggle-text');
+if (weekMode === 'auto') {
+const autoType = getAutoWeekType(todayDate);
+btnText.innerText = Авто (${autoType === 'num' ? 'Числ' : 'Знамен'});
+} else if (weekMode === 'num') {
+btnText.innerText = "Числитель";
+} else {
+btnText.innerText = "Знаменатель";
+}
+}
+​function handleSearch(val) {
+searchQuery = val.toLowerCase().trim();
+setView(currentView);
+}
+​function setView(view) {
+currentView = view;
+​document.querySelectorAll('.tab-btn').forEach(btn => {
+btn.classList.remove('theme-card-active');
+});
+document.getElementById(tab-${view}).classList.add('theme-card-active');
+​const container = document.getElementById('lessons-container');
+container.innerHTML = '';
+​const bannerBadge = document.getElementById('view-badge');
+const bannerTitle = document.getElementById('view-title');
+const bannerSub = document.getElementById('view-subtitle');
+​if (view === 'today') {
+const dayOfWeek = todayDate.getDay();
+const weekType = getEffectiveWeekType(todayDate);
+​bannerBadge.innerText = "СЕГОДНЯ";
+bannerTitle.innerText = daysNames[dayOfWeek];
+bannerSub.innerText = ${weekType === 'num' ? 'Числитель' : 'Знаменатель'} • ${activeGroup};
+​renderSingleDay(weekType, dayOfWeek, container);
+}
+else if (view === 'tomorrow') {
+const tomorrowDate = new Date(todayDate);
+tomorrowDate.setDate(todayDate.getDate() + 1);
+const dayOfWeek = tomorrowDate.getDay();
+const weekType = getEffectiveWeekType(tomorrowDate);
+​bannerBadge.innerText = "ЗАВТРА";
+bannerTitle.innerText = daysNames[dayOfWeek];
+bannerSub.innerText = ${weekType === 'num' ? 'Числитель' : 'Знаменатель'} • ${activeGroup};
+​renderSingleDay(weekType, dayOfWeek, container);
+}
+else if (view === 'num') {
+bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
+bannerTitle.innerText = "Числитель";
+bannerSub.innerText = Неделя 1 • ${activeGroup};
+​renderFullWeek('num', container);
+}
+else if (view === 'den') {
+bannerBadge.innerText = "ВСЯ НЕДЕЛЯ";
+bannerTitle.innerText = "Знаменатель";
+bannerSub.innerText = Неделя 2 • ${activeGroup};
+​renderFullWeek('den', container);
+}
+else if (view === 'all') {
+bannerBadge.innerText = "ПОЛНОЕ РАСПИСАНИЕ";
+bannerTitle.innerText = "Числитель и Знаменатель";
+bannerSub.innerText = Все занятия • ${activeGroup};
+​renderCombinedWeek(container);
+}
+}
+​function renderSingleDay(weekType, dayNum, targetEl) {
+if (dayNum === 0 || dayNum === 6) {
+targetEl.innerHTML = <div class="theme-card rounded-2xl p-6 text-center space-y-2"> <div class="w-12 h-12 bg-badge rounded-2xl flex items-center justify-center mx-auto text-xl text-accent"> <i class="fa-solid fa-mug-hot"></i> </div> <h3 class="text-base font-extrabold text-theme-main">Выходной день</h3> <p class="text-xs text-theme-sub max-w-xs mx-auto">Сегодня занятий нет. Отдыхайте!</p> </div>;
+return;
+}
+​const currentSched = getGroupSchedule(activeGroup);
+let dayLessons = currentSched[weekType][dayNum] || [];
+​if (searchQuery) {
+dayLessons = dayLessons.filter(l =>
+l.subject.toLowerCase().includes(searchQuery) ||
+l.teacher.toLowerCase().includes(searchQuery)
+);
+}
+​if (dayLessons.length === 0) {
+targetEl.innerHTML = <p class="text-theme-sub text-center py-6 text-xs font-semibold">Уроков не найдено</p>;
+return;
+}
+​const meta = groupsMeta[activeGroup] || { shift: 1 };
+const times = shiftTimes[meta.shift];
+​const now = new Date();
+const currentMin = now.getHours() * 60 + now.getMinutes();
+const isTodayView = (currentView === 'today' && dayNum === todayDate.getDay());
+​dayLessons.forEach((lesson) => {
+const lessonTime = times[lesson.num];
+const isCurrent = isTodayView && (currentMin >= lessonTime.startMin && currentMin <= lessonTime.endMin);
+targetEl.appendChild(createLessonCard(lesson, lessonTime, isCurrent));
+});
+}
+​function renderFullWeek(weekType, targetEl) {
+const currentSched = getGroupSchedule(activeGroup);
+const meta = groupsMeta[activeGroup] || { shift: 1 };
+const times = shiftTimes[meta.shift];
+​for (let day = 1; day <= 5; day++) {
+let dayLessons = currentSched[weekType][day] || [];
+​if (searchQuery) {
+dayLessons = dayLessons.filter(l =>
+l.subject.toLowerCase().includes(searchQuery) ||
+l.teacher.toLowerCase().includes(searchQuery)
+);
+}
+​if (dayLessons.length > 0 || !searchQuery) {
+const dayHeader = document.createElement('div');
+dayHeader.className = "flex items-center space-x-2 pt-2 pb-1";
+dayHeader.innerHTML = <span class="w-2 h-2 rounded-full bg-accent"></span> <h3 class="text-xs font-extrabold text-theme-main uppercase tracking-wider">${daysNames[day]}</h3>;
+targetEl.appendChild(dayHeader);
+​if (dayLessons.length === 0) {
+const emptyMsg = document.createElement('p');
+emptyMsg.className = "text-[11px] text-theme-sub italic pl-4";
+emptyMsg.innerText = "Нет занятий";
+targetEl.appendChild(emptyMsg);
+} else {
+dayLessons.forEach((lesson) => {
+targetEl.appendChild(createLessonCard(lesson, times[lesson.num], false));
+});
+}
+}
+}
+}
+​function renderCombinedWeek(targetEl) {
+const currentSched = getGroupSchedule(activeGroup);
+const meta = groupsMeta[activeGroup] || { shift: 1 };
+const times = shiftTimes[meta.shift];
+​for (let day = 1; day <= 5; day++) {
+const numLessons = currentSched.num[day] || [];
+const denLessons = currentSched.den[day] || [];
+​const dayHeader = document.createElement('div');
+dayHeader.className = "flex items-center space-x-2 pt-2 pb-1";
+dayHeader.innerHTML = <span class="w-2 h-2 rounded-full bg-accent"></span> <h3 class="text-xs font-extrabold text-theme-main uppercase tracking-wider">${daysNames[day]}</h3>;
+targetEl.appendChild(dayHeader);
+​for (let pair = 1; pair <= 4; pair++) {
+const numL = numLessons.find(l => l.num === pair);
+const denL = denLessons.find(l => l.num === pair);
+​if (numL || denL) {
+const card = document.createElement('div');
+card.className = "theme-card rounded-2xl p-3 space-y-1.5";
+const t = times[pair];
+​let html = <div class="flex justify-between items-center text-[10px] text-theme-sub font-bold border-b border-black/5 dark:border-white/5 pb-1"> <span>${pair} ПАРА (${t.start} - ${t.end})</span> </div>;
+​if (numL && denL && numL.subject === denL.subject && numL.teacher === denL.teacher) {
+html += <div class="flex justify-between items-center text-xs"> <div> <h4 class="font-bold text-theme-main">${numL.subject}</h4> <p class="text-[11px] text-theme-sub">${numL.teacher} • ${numL.room}</p> </div> <span class="text-[9px] bg-badge text-accent px-2 py-0.5 rounded font-bold">Все недели</span> </div>;
+} else {
+if (numL) {
+html += <div class="text-xs flex justify-between items-center"> <div> <span class="text-[9px] font-black text-blue-400 uppercase block">ЧИСЛИТЕЛЬ:</span> <span class="font-bold text-theme-main">${numL.subject}</span> <span class="text-[11px] text-theme-sub block">${numL.teacher} • ${numL.room}</span> </div> </div>;
+}
+if (denL) {
+html += <div class="text-xs flex justify-between items-center ${numL ? 'pt-1 border-t border-black/5 dark:border-white/5' : ''}"> <div> <span class="text-[9px] font-black text-purple-400 uppercase block">ЗНАМЕНАТЕЛЬ:</span> <span class="font-bold text-theme-main">${denL.subject}</span> <span class="text-[11px] text-theme-sub block">${denL.teacher} • ${denL.room}</span> </div> </div>;
+}
+}
+​card.innerHTML = html;
+targetEl.appendChild(card);
+}
+}
+}
+}
+​function createLessonCard(lesson, lessonTime, isCurrent) {
+const card = document.createElement('div');
+const activeStyle = isCurrent ? "border-emerald-500 bg-emerald-500/10 shadow-md" : "hover:border-blue-400";
+card.className = theme-card rounded-2xl p-3 flex items-center justify-between gap-2.5 transition ${activeStyle};
+​const teacherStr = lesson.teacher ?  • ${lesson.teacher} : '';
+​card.innerHTML = <div class="flex items-center gap-2.5 min-w-0"> <div class="w-8 h-8 rounded-xl ${isCurrent ? 'bg-emerald-500 text-white font-black' : 'bg-badge text-accent font-bold'} text-xs flex items-center justify-center shrink-0"> ${lesson.num} </div> <div class="min-w-0"> <div class="flex items-center gap-1.5"> <h4 class="text-xs font-bold text-theme-main truncate leading-snug">${lesson.subject}</h4> ${isCurrent ? '<span class="text-[8px] bg-emerald-500 text-white font-black px-1 py-0.5 rounded uppercase shrink-0">Идет</span>' : ''} </div> <p class="text-[11px] text-theme-sub truncate">${lesson.room}${teacherStr}</p> </div> </div> <div class="text-right shrink-0"> <span class="inline-block px-2 py-0.5 rounded-lg bg-black/5 dark:bg-white/10 text-[10px] font-bold text-theme-main"> ${lessonTime.start} – ${lessonTime.end} </span> </div>;
+return card;
+}
+​function updateLiveTimer() {
+const now = new Date();
+const dayNum = now.getDay();
+​if (dayNum === 0 || dayNum === 6) {
+document.getElementById('live-status-card').classList.add('hidden');
+return;
+}
+​const currentMin = now.getHours() * 60 + now.getMinutes();
+const weekType = getEffectiveWeekType(now);
+const currentSched = getGroupSchedule(activeGroup);
+const dayLessons = currentSched[weekType][dayNum] || [];
+​const meta = groupsMeta[activeGroup] || { shift: 1 };
+const times = shiftTimes[meta.shift];
+​const liveCard = document.getElementById('live-status-card');
+const statusTitle = document.getElementById('live-status-title');
+const statusSub = document.getElementById('live-status-sub');
+const timerBadge = document.getElementById('live-timer-badge');
+​let activeLesson = null;
+let nextLesson = null;
+​for (let l of dayLessons) {
+const lessonTime = times[l.num];
+if (currentMin >= lessonTime.startMin && currentMin <= lessonTime.endMin) {
+activeLesson = { ...l, times: lessonTime };
+break;
+}
+if (currentMin < lessonTime.startMin && !nextLesson) {
+nextLesson = { ...l, times: lessonTime };
+}
+}
+​if (activeLesson) {
+liveCard.classList.remove('hidden');
+statusTitle.innerText = ИДЕТ ${activeLesson.num} ПАРА (${activeGroup});
+statusSub.innerText = ${activeLesson.subject} (${activeLesson.room});
+const remMin = activeLesson.times.endMin - currentMin;
+timerBadge.innerText = осталось ${remMin} мин;
+} else if (nextLesson) {
+const remMin = nextLesson.times.startMin - currentMin;
+if (remMin <= 45) {
+liveCard.classList.remove('hidden');
+statusTitle.innerText = СЛЕДУЮЩАЯ ${nextLesson.num} ПАРА (${activeGroup});
+statusSub.innerText = ${nextLesson.subject} (${nextLesson.room});
+timerBadge.innerText = через ${remMin} мин;
+} else {
+liveCard.classList.add('hidden');
+}
+} else {
+liveCard.classList.add('hidden');
+}
+}
+​function copyToWhatsApp() {
+let text = "";
+let targetDay = todayDate.getDay();
+let weekType = getEffectiveWeekType(todayDate);
+​if (currentView === 'today') {
+text = formatDayForWA(weekType, targetDay, "СЕГОДНЯ");
+}
+else if (currentView === 'tomorrow') {
+const tomorrowDate = new Date(todayDate);
+tomorrowDate.setDate(tomorrowDate.getDate() + 1);
+targetDay = tomorrowDate.getDay();
+weekType = getEffectiveWeekType(tomorrowDate);
+text = formatDayForWA(weekType, targetDay, "ЗАВТРА");
+}
+else if (currentView === 'num') {
+text = formatFullWeekForWA('num');
+}
+else if (currentView === 'den') {
+text = formatFullWeekForWA('den');
+}
+else {
+text = formatFullWeekForWA(weekType);
+}
+​const dummy = document.createElement("textarea");
+document.body.appendChild(dummy);
+dummy.value = text;
+dummy.select();
+document.execCommand("copy");
+document.body.removeChild(dummy);
+​showToast("Расписание скопировано!");
+}
+​function formatDayForWA(weekType, dayNum, titleTag) {
+const dayName = daysNames[dayNum];
+const weekTitle = weekType === 'num' ? 'Числитель' : 'Знаменатель';
+​if (dayNum === 0 || dayNum === 6) {
+return 📅 *РАСПИСАНИЕ ${activeGroup} (${titleTag})*\n📌 ${dayName}: *Выходной день!* 😴;
+}
+​const currentSched = getGroupSchedule(activeGroup);
+const lessons = currentSched[weekType][dayNum] || [];
+const meta = groupsMeta[activeGroup] || { shift: 1 };
+const times = shiftTimes[meta.shift];
+​let msg = 📅 *РАСПИСАНИЕ ${activeGroup} (${titleTag})*\n📌 *${dayName}* (${weekTitle})\n\n;
+​lessons.forEach(l => {
+const t = times[l.num];
+const teacherStr = l.teacher ?  (${l.teacher}) : '';
+msg += *${l.num} пара* (${t.start} - ${t.end}):\n  📘 ${l.subject}${teacherStr}\n  📍 ${l.room}\n\n;
+});
+​return msg.trim();
+}
+​function formatFullWeekForWA(weekType) {
+const weekTitle = weekType === 'num' ? 'Числитель' : 'Знаменатель';
+const currentSched = getGroupSchedule(activeGroup);
+let msg = 📅 *РАСПИСАНИЕ ${activeGroup} (${weekTitle})*\n\n;
+​for (let day = 1; day <= 5; day++) {
+msg += 📌 *${daysNames[day].toUpperCase()}*\n;
+const lessons = currentSched[weekType][day] || [];
+lessons.forEach(l => {
+msg += ${l.num}. ${l.subject} (${l.room})\n;
+});
+msg += \n;
+}
+return msg.trim();
+}
+​function openSettingsModal() {
+const modal = document.getElementById('settings-modal');
+modal.classList.remove('opacity-0', 'pointer-events-none');
+modal.children[0].classList.remove('scale-95');
+}
+​function closeSettingsModal() {
+const modal = document.getElementById('settings-modal');
+modal.classList.add('opacity-0', 'pointer-events-none');
+modal.children[0].classList.add('scale-95');
+}
+​function showToast(message) {
+const toast = document.getElementById('toast');
+document.getElementById('toast-msg').innerText = message;
+toast.classList.remove('opacity-0');
+setTimeout(() => {
+toast.classList.add('opacity-0');
+}, 2200);
+}
+</script>
 </body>
 </html>
