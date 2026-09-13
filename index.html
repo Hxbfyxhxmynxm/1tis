@@ -75,7 +75,7 @@
                         <span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">2 СМЕНА</span>
                         <h1 class="text-xl font-black tracking-tight">1ТИС-2-26</h1>
                     </div>
-                    <p id="current-date-text" class="text-xs opacity-60 mt-0.5">чт, 10 сентября 2026 г.</p>
+                    <p id="current-date-text" class="text-xs opacity-60 mt-0.5">--</p>
                     <div class="flex items-center gap-1.5 mt-0.5">
                         <span id="user-online-dot" class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                         <p id="user-status-text" class="text-xs text-cyan-400 font-semibold">Гость</p>
@@ -345,14 +345,13 @@
         ];
 
         const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
-        const daysNamesShort = ["Вс", "Пн", "Вт", "Ср", "Чт", "Пт", "Сб"];
 
         // РАСПИСАНИЕ УРОКОВ (1 - Числитель, 2 - Знаменатель)
         const scheduleData = {
             1: { // 1 неделя (Числитель)
                 1: [ // Пн
+                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
                     { name: "Казахский язык и лит.", teacher: "Калиева С.Н." },
-                    { name: "Физика", teacher: "Смагулова К.А." },
                     { name: "История Казахстана", teacher: "Муканов Б.Т." }
                 ],
                 2: [ // Вт
@@ -361,14 +360,14 @@
                     { name: "Иностранный язык", teacher: "Жумагулова Г.Т." }
                 ],
                 3: [ // Ср
+                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
                     { name: "Химия", teacher: "Оспанова М.К." },
-                    { name: "Биология", teacher: "Ермеков Д.С." },
-                    { name: "География", teacher: "Алиева З.Т." }
+                    { name: "Биология", teacher: "Ермеков Д.С." }
                 ],
                 4: [ // Чт
-                    { name: "Русская литература", teacher: "Ибраева Н.Н." },
+                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
                     { name: "Казахский язык и лит.", teacher: "Калиева С.Н." },
-                    { name: "Физическая культура", teacher: "Тоқтарбек Е." }
+                    { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
                 5: [ // Пт
                     { name: "Математика", teacher: "Ахметова А.Б." },
@@ -379,9 +378,9 @@
             },
             2: { // 2 неделя (Знаменатель)
                 1: [ // Пн
+                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
                     { name: "Физика", teacher: "Смагулова К.А." },
-                    { name: "Математика", teacher: "Ахметова А.Б." },
-                    { name: "Информатика", teacher: "Серік А.С." }
+                    { name: "Математика", teacher: "Ахметова А.Б." }
                 ],
                 2: [ // Вт
                     { name: "Иностранный язык", teacher: "Жумагулова Г.Т." },
@@ -389,8 +388,8 @@
                     { name: "История Казахстана", teacher: "Муканов Б.Т." }
                 ],
                 3: [ // Ср
+                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
                     { name: "Биология", teacher: "Ермеков Д.С." },
-                    { name: "Химия", teacher: "Оспанова М.К." },
                     { name: "Черчение", teacher: "Садыков Б.К." }
                 ],
                 4: [ // Чт
@@ -420,6 +419,9 @@
             renderClassmates();
             renderChat();
             updateDatesAndSchedule();
+
+            // Автообновление каждые 60 секунд
+            setInterval(updateDatesAndSchedule, 60000);
         });
 
         function showAuthScreen() {
@@ -468,12 +470,16 @@
         }
 
         function getWeekInfo(date = new Date()) {
-            const firstJan = new Date(date.getFullYear(), 0, 1);
-            const numberOfDays = Math.floor((date - firstJan) / (24 * 60 * 60 * 1000));
-            const weekNum = Math.ceil((date.getDay() + 1 + numberOfDays) / 7);
+            const tempDate = new Date(date.getTime());
+            tempDate.setHours(0, 0, 0, 0);
+            tempDate.setDate(tempDate.getDate() + 3 - (tempDate.getDay() + 6) % 7);
+            const week1 = new Date(tempDate.getFullYear(), 0, 4);
+            const weekNum = 1 + Math.round(((tempDate - week1) / 86400000 - 3 + (week1.getDay() + 6) % 7) / 7);
             const weekType = (weekNum % 2 === 0) ? 2 : 1; // 1 = Числитель, 2 = Знаменатель
             return { weekNum, weekType };
         }
+
+        let activeView = 'today';
 
         function updateDatesAndSchedule() {
             const now = new Date();
@@ -486,10 +492,11 @@
             document.getElementById('subtab-today').innerText = daysNames[now.getDay()];
             document.getElementById('subtab-tomorrow').innerText = daysNames[tomorrow.getDay()];
 
-            setView('today');
+            setView(activeView);
         }
 
         function setView(view) {
+            activeView = view;
             const tabs = ['today', 'tomorrow', 'week1', 'week2'];
             tabs.forEach(t => {
                 const btn = document.getElementById(`tab-${t}`);
