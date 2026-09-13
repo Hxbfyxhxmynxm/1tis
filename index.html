@@ -124,7 +124,7 @@
                         <h2 id="day-title" class="text-lg font-bold">--</h2>
                         <p id="week-type-subtitle" class="text-xs opacity-60">--</p>
                     </div>
-                    <a href="https://wa.me/" target="_blank" class="w-10 h-10 bg-emerald-500 text-white rounded-2xl flex items-center justify-center text-xl shadow-lg active:scale-95 transition">
+                    <a href="https://chat.whatsapp.com/" target="_blank" rel="noopener noreferrer" class="w-10 h-10 bg-emerald-500 hover:bg-emerald-400 text-white rounded-2xl flex items-center justify-center text-xl shadow-lg active:scale-95 transition">
                         <i class="fa-brands fa-whatsapp"></i>
                     </a>
                 </div>
@@ -136,7 +136,7 @@
                 <div class="glass-card rounded-2xl p-4 space-y-3">
                     <div class="flex items-center gap-2 text-xs font-bold text-blue-400">
                         <i class="fa-regular fa-clock"></i>
-                        <span>ВРЕМЯ ПАР (2 СМЕНА)</span>
+                        <span>ВРЕМЯ ПАР (2 СМЕНА • КАБИНЕТ 301)</span>
                     </div>
                     <div class="grid grid-cols-2 gap-2 text-xs">
                         <div class="bg-black/30 p-2.5 rounded-xl border border-white/5">
@@ -346,61 +346,69 @@
 
         const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 
-        // РАСПИСАНИЕ УРОКОВ (1 - Числитель, 2 - Знаменатель)
+        // РАБОЧЕЕ РАСПИСАНИЕ ДЛЯ ГРУППЫ 1ТИС-2-26 (ИЗ ФАЙЛА)
+        // 1 - Числитель (верхняя строчка)
+        // 2 - Знаменатель (нижняя строчка)
         const scheduleData = {
-            1: { // 1 неделя (Числитель)
+            1: { // 1 Неделя (Числитель)
                 1: [ // Пн
-                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
-                    { name: "Казахский язык и лит.", teacher: "Калиева С.Н." },
-                    { name: "История Казахстана", teacher: "Муканов Б.Т." }
+                    { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
+                    { name: "Информатика", teacher: "Анесова А.А." },
+                    { name: "Всемирная история", teacher: "Боранбаева Д. М." },
+                    { name: "География", teacher: "Байбакирова С.Ж." }
                 ],
                 2: [ // Вт
-                    { name: "Математика", teacher: "Ахметова А.Б." },
-                    { name: "Информатика", teacher: "Серік А.С." },
-                    { name: "Иностранный язык", teacher: "Жумагулова Г.Т." }
+                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
+                    { name: "Физика", teacher: "Жексенбина А.З." },
+                    { name: "НВП", teacher: "Бердіқұл Б.А." },
+                    { name: "Биология", teacher: "Ермекқалиева З. А." }
                 ],
                 3: [ // Ср
-                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
-                    { name: "Химия", teacher: "Оспанова М.К." },
-                    { name: "Биология", teacher: "Ермеков Д.С." }
-                ],
-                4: [ // Чт
-                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { name: "Казахский язык и лит.", teacher: "Калиева С.Н." },
+                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                    { name: "История Казахстана", teacher: "Жанбатырова А.Е." },
+                    { name: "Иностранный язык", teacher: "Момынқұлова М.А." },
                     { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
+                4: [ // Чт
+                    { name: "Химия", teacher: "Жүніс У.Х." },
+                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
+                ],
                 5: [ // Пт
-                    { name: "Математика", teacher: "Ахметова А.Б." },
-                    { name: "Всемирная история", teacher: "Муканов Б.Т." },
-                    { name: "Основы права", teacher: "Нурпеисов К.М." }
+                    { name: "Математика", teacher: "Ерғали А.Ә." },
+                    { name: "Химия", teacher: "Жүніс У.Х." },
+                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
                 ],
                 6: []
             },
-            2: { // 2 неделя (Знаменатель)
+            2: { // 2 Неделя (Знаменатель)
                 1: [ // Пн
-                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
-                    { name: "Физика", teacher: "Смагулова К.А." },
-                    { name: "Математика", teacher: "Ахметова А.Б." }
+                    { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
+                    { name: "Информатика", teacher: "Анесова А.А." },
+                    { name: "Всемирная история", teacher: "Боранбаева Д. М." },
+                    { name: "География", teacher: "Байбакирова С.Ж." }
                 ],
                 2: [ // Вт
-                    { name: "Иностранный язык", teacher: "Жумагулова Г.Т." },
-                    { name: "Казахский язык и лит.", teacher: "Калиева С.Н." },
-                    { name: "История Казахстана", teacher: "Муканов Б.Т." }
+                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
+                    { name: "Физика", teacher: "Жексенбина А.З." },
+                    { name: "Математика", teacher: "Ерғали А.Ә." },
+                    { name: "Биология", teacher: "Ермекқалиева З. А." }
                 ],
                 3: [ // Ср
-                    { name: "Инженерная графика", teacher: "Смагулова К.А." },
-                    { name: "Биология", teacher: "Ермеков Д.С." },
-                    { name: "Черчение", teacher: "Садыков Б.К." }
+                    { name: "Физика", teacher: "Жексенбина А.З." },
+                    { name: "История Казахстана", teacher: "Жанбатырова А.Е." },
+                    { name: "Иностранный язык", teacher: "Момынқұлова М.А." },
+                    { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
                 4: [ // Чт
                     { name: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { name: "Казахский язык и лит.", teacher: "Калиева С.Н." },
+                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
                     { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
                 5: [ // Пт
-                    { name: "Русский язык", teacher: "Ибраева Н.Н." },
-                    { name: "Математика", teacher: "Ахметова А.Б." },
-                    { name: "Физическая культура", teacher: "Тоқтарбек Е." }
+                    { name: "Математика", teacher: "Ерғали А.Ә." },
+                    { name: "Химия", teacher: "Жүніс У.Х." },
+                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
                 ],
                 6: []
             }
@@ -420,7 +428,7 @@
             renderChat();
             updateDatesAndSchedule();
 
-            // Автообновление каждые 60 секунд
+            // Автообновление раз в минуту
             setInterval(updateDatesAndSchedule, 60000);
         });
 
