@@ -1,64 +1,33 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-  <meta charset="UTF-8">
-  <title>Вход по лицу и Чат</title>
-  <!-- Подключаем библиотеку для распознавания лиц -->
-  <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
-  <style>
-    body { font-family: sans-serif; background: #18181b; color: #fff; padding: 20px; }
-    .card { background: #27272a; padding: 20px; border-radius: 12px; max-width: 450px; margin: 0 auto; }
-    .avatar-box { width: 120px; height: 120px; border-radius: 50%; overflow: hidden; margin: 0 auto 15px; border: 3px solid #3f3f46; position: relative; }
-    .avatar-box img, .avatar-box video { width: 100%; height: 100%; object-fit: cover; }
-    .status-badge { display: inline-block; width: 10px; height: 10px; border-radius: 50%; background: #71717a; margin-right: 6px; }
-    .status-badge.online { background: #22c55e; }
-    .btn { background: #3b82f6; color: #fff; border: none; padding: 10px 16px; border-radius: 8px; cursor: pointer; width: 100%; margin-top: 8px; }
-    .btn-secondary { background: #3f3f46; }
-    .chat-box { height: 150px; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px; overflow-y: auto; margin-top: 15px; background: #18181b; }
-    .hidden { display: none; }
-  </style>
-</head>
-<body>
-
-<div class="card">
-  <h2>Профиль одногруппника</h2>
-  
-  <div class="avatar-box">
-    <!-- Эталонное фото одногруппника -->
-    <img id="reference-photo" src="classmate_photo.jpg" alt="Одногруппник">
-    <!-- Окно живой камеры -->
-    <video id="webcam" autoplay playsinline class="hidden"></video>
-  </div>
-
-  <p>Статус: <span id="status-icon" class="status-badge"></span><span id="status-text">Офлайн</span></p>
-
-  <div id="auth-controls">
-    <button class="btn" onclick="openCamera()">Сделать селфи (Камера)</button>
-    <button class="btn btn-secondary" onclick="document.getElementById('file-input').click()">Загрузить из галереи</button>
-    <input type="file" id="file-input" accept="image/*" class="hidden" onchange="handleFileUpload(event)">
-    <button id="snap-btn" class="btn hidden" onclick="verifyFace()">Сканировать лицо и войти</button>
-  </div>
-
-  <div id="chat-section" class="hidden">
-    <h3>Чат группы</h3>
-    <div id="chat-messages" class="chat-box"></div>
-    <input type="text" id="chat-input" placeholder="Введите сообщение..." style="width: 70%; padding: 8px; margin-top: 8px;">
-    <button class="btn" style="width: 25%;" onclick="sendMessage()">Отправить</button>
-  </div>
-</div>
-
 <script>
   let video = document.getElementById('webcam');
   let refImg = document.getElementById('reference-photo');
 
-  // Загружаем нейросетевые модели для распознавания
+  // Загружаем модели ИИ
   Promise.all([
     faceapi.nets.ssdMobilenetv1.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model'),
     faceapi.nets.faceRecognitionNet.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model'),
     faceapi.nets.faceLandmark64Net.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model')
-  ]).then(() => console.log("Модели ИИ загружены"));
+  ]).then(() => {
+    console.log("Модели ИИ загружены");
+    checkAuth(); // Проверяем вход при старте
+  });
 
-  // Включение камеры
+  // Проверка: вошел ли пользователь ранее
+  function checkAuth() {
+    const isAuth = localStorage.getItem('user_authenticated');
+    if (isAuth === 'true') {
+      setOnlineState();
+    }
+  }
+
+  // Перевод интерфейса в режим "В сети"
+  function setOnlineState() {
+    document.getElementById('status-icon').classList.add('online');
+    document.getElementById('status-text').innerText = "В сети";
+    document.getElementById('auth-controls').classList.add('hidden');
+    document.getElementById('chat-section').classList.remove('hidden');
+  }
+
   async function openCamera() {
     refImg.classList.add('hidden');
     video.classList.remove('hidden');
@@ -68,7 +37,6 @@
     video.srcObject = stream;
   }
 
-  // Загрузка фото из галереи
   function handleFileUpload(event) {
     const file = event.target.files[0];
     if (file) {
@@ -79,11 +47,9 @@
     }
   }
 
-  // ИИ сканирование и сравнение лиц
   async function verifyFace() {
     const inputSource = video.classList.contains('hidden') ? refImg : video;
     
-    // Получаем векторы лиц с фото одногруппника и с текущего снимка/камеры
     const refDetections = await faceapi.detectSingleFace(refImg).withFaceLandmarks().withFaceDescriptor();
     const userDetections = await faceapi.detectSingleFace(inputSource).withFaceLandmarks().withFaceDescriptor();
 
@@ -92,21 +58,23 @@
       return;
     }
 
-    // Вычисляем евклидово расстояние между векторами лиц
     const distance = faceapi.euclideanDistance(refDetections.descriptor, userDetections.descriptor);
 
-    // Чем меньше значение (обычно меньше 0.6), тем больше вероятность, что это один человек
     if (distance < 0.55) {
-      document.getElementById('status-icon').classList.add('online');
-      document.getElementById('status-text').innerText = "В сети";
-      document.getElementById('auth-controls').classList.add('hidden');
-      document.getElementById('chat-section').classList.remove('hidden');
+      // Сохраняем сессию в памяти браузера
+      localStorage.setItem('user_authenticated', 'true');
+      setOnlineState();
     } else {
       alert("Доступ запрещен: лицо не совпадает с фото одногруппника");
     }
   }
 
-  // Отправка сообщений в чат
+  // Функция для выхода из аккаунта
+  function logout() {
+    localStorage.removeItem('user_authenticated');
+    location.reload(); // Перезагружаем страницу
+  }
+
   function sendMessage() {
     const input = document.getElementById('chat-input');
     const messages = document.getElementById('chat-messages');
@@ -117,6 +85,3 @@
     }
   }
 </script>
-
-</body>
-</html>
