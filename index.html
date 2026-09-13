@@ -1,87 +1,671 @@
-<script>
-  let video = document.getElementById('webcam');
-  let refImg = document.getElementById('reference-photo');
-
-  // Загружаем модели ИИ
-  Promise.all([
-    faceapi.nets.ssdMobilenetv1.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model'),
-    faceapi.nets.faceRecognitionNet.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model'),
-    faceapi.nets.faceLandmark64Net.loadFromUri('https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model')
-  ]).then(() => {
-    console.log("Модели ИИ загружены");
-    checkAuth(); // Проверяем вход при старте
-  });
-
-  // Проверка: вошел ли пользователь ранее
-  function checkAuth() {
-    const isAuth = localStorage.getItem('user_authenticated');
-    if (isAuth === 'true') {
-      setOnlineState();
-    }
-  }
-
-  // Перевод интерфейса в режим "В сети"
-  function setOnlineState() {
-    document.getElementById('status-icon').classList.add('online');
-    document.getElementById('status-text').innerText = "В сети";
-    document.getElementById('auth-controls').classList.add('hidden');
-    document.getElementById('chat-section').classList.remove('hidden');
-  }
-
-  async function openCamera() {
-    refImg.classList.add('hidden');
-    video.classList.remove('hidden');
-    document.getElementById('snap-btn').classList.remove('hidden');
+<!DOCTYPE html>
+<html lang="ru" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Расписание и Аккаунты 1ТИС-2-26</title>
     
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    video.srcObject = stream;
-  }
+    <meta name="theme-color" content="#0b0f17">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
 
-  function handleFileUpload(event) {
-    const file = event.target.files[0];
-    if (file) {
-      refImg.src = URL.createObjectURL(file);
-      refImg.classList.remove('hidden');
-      video.classList.add('hidden');
-      document.getElementById('snap-btn').classList.remove('hidden');
-    }
-  }
+    <!-- Face-API -->
+    <script defer src="https://cdn.jsdelivr.net/npm/@vladmandic/face-api/dist/face-api.js"></script>
 
-  async function verifyFace() {
-    const inputSource = video.classList.contains('hidden') ? refImg : video;
-    
-    const refDetections = await faceapi.detectSingleFace(refImg).withFaceLandmarks().withFaceDescriptor();
-    const userDetections = await faceapi.detectSingleFace(inputSource).withFaceLandmarks().withFaceDescriptor();
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: { extend: { fontFamily: { sans: ['Inter', 'sans-serif'] } } }
+        }
+    </script>
 
-    if (!refDetections || !userDetections) {
-      alert("Лицо не найдено! Попробуйте еще раз");
-      return;
-    }
+    <style>
+        body { font-family: 'Inter', sans-serif; -webkit-tap-highlight-color: transparent; user-select: none; }
+        body.theme-dark { background: #0b0f17; color: #f3f4f6; }
+        .glass-card { background: rgba(17, 24, 39, 0.75); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); }
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .screen-flashlight {
+            box-shadow: 0 0 100px 50px rgba(255, 255, 255, 0.95), inset 0 0 40px 20px rgba(255, 255, 255, 0.8) !important;
+            border-color: #ffffff !important;
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-24 flex flex-col justify-between theme-dark">
 
-    const distance = faceapi.euclideanDistance(refDetections.descriptor, userDetections.descriptor);
+    <!-- 1. МЕНЮ АВТОРИЗАЦИИ -->
+    <div id="auth-screen" class="fixed inset-0 z-50 bg-[#0b0f17] flex flex-col items-center justify-center p-6 text-center space-y-6">
+        <div class="w-20 h-20 bg-cyan-600/20 border border-cyan-500/30 rounded-3xl flex items-center justify-center text-cyan-400 text-3xl shadow-2xl shadow-cyan-500/10">
+            <i class="fa-solid fa-user-shield"></i>
+        </div>
 
-    if (distance < 0.55) {
-      // Сохраняем сессию в памяти браузера
-      localStorage.setItem('user_authenticated', 'true');
-      setOnlineState();
-    } else {
-      alert("Доступ запрещен: лицо не совпадает с фото одногруппника");
-    }
-  }
+        <div>
+            <span class="bg-blue-600/30 text-blue-300 text-[10px] font-extrabold px-2.5 py-1 rounded-lg uppercase tracking-wider border border-blue-500/30">Группа 1ТИС-2-26</span>
+            <h1 class="text-2xl font-black mt-2 tracking-tight">Авторизация</h1>
+            <p class="text-xs opacity-60 mt-1">Выберите способ входа в аккаунт</p>
+        </div>
 
-  // Функция для выхода из аккаунта
-  function logout() {
-    localStorage.removeItem('user_authenticated');
-    location.reload(); // Перезагружаем страницу
-  }
+        <div class="w-full max-w-xs space-y-2.5">
+            <button onclick="startFaceAuthFromScreen()" class="w-full bg-cyan-600 hover:bg-cyan-500 text-white font-bold py-3 rounded-2xl text-xs active:scale-95 transition shadow-lg shadow-cyan-600/20 flex items-center justify-center gap-2">
+                <i class="fa-solid fa-face-viewfinder text-base"></i>
+                <span>Войти по Face ID</span>
+            </button>
 
-  function sendMessage() {
-    const input = document.getElementById('chat-input');
-    const messages = document.getElementById('chat-messages');
-    if (input.value.trim() !== '') {
-      messages.innerHTML += `<div><b>Вы:</b> ${input.value}</div>`;
-      input.value = '';
-      messages.scrollTop = messages.scrollHeight;
-    }
-  }
-</script>
+            <!-- КНОПКА ДЛЯ ВХОДА РАЗРАБОТЧИКА -->
+            <button onclick="loginAsAdminDirect()" class="w-full bg-purple-600/30 border border-purple-500/40 text-purple-200 font-bold py-3 rounded-2xl text-xs active:scale-95 transition flex items-center justify-center gap-2">
+                <i class="fa-solid fa-code text-purple-400"></i>
+                <span>Войти как Разработчик</span>
+            </button>
+
+            <button onclick="continueAsGuest()" class="w-full glass-card opacity-80 hover:opacity-100 text-white font-semibold py-2.5 rounded-2xl text-xs active:scale-95 transition">
+                Войти как гость
+            </button>
+        </div>
+
+        <p class="text-[10px] opacity-40">Система аккаунтов и распознавания лиц</p>
+    </div>
+
+    <!-- 2. ОСНОВНОЙ ИНТЕРФЕЙС ПРИЛОЖЕНИЯ -->
+    <div id="app-content" class="hidden">
+        <header class="sticky top-0 z-40 glass-card border-b px-4 py-3 shadow-lg">
+            <div class="max-w-md mx-auto flex justify-between items-center">
+                <div>
+                    <div class="flex items-center space-x-2">
+                        <span class="bg-blue-600 text-white text-[10px] font-extrabold px-2 py-0.5 rounded-md uppercase tracking-wider">2 смена</span>
+                        <h1 class="text-xl font-black tracking-tight">1ТИС-2-26</h1>
+                    </div>
+                    <!-- ИНДИКАТОР ОНЛАЙН СТАТУСА -->
+                    <div class="flex items-center gap-1.5 mt-0.5">
+                        <span id="user-online-dot" class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
+                        <p id="user-status-text" class="text-xs text-cyan-400 font-semibold">Гость</p>
+                    </div>
+                </div>
+                
+                <div class="flex items-center gap-2">
+                    <button onclick="logoutUser()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold bg-red-600/20 text-red-300 border border-red-500/30 active:scale-95 flex items-center gap-1">
+                        <i class="fa-solid fa-right-from-bracket"></i> Выход
+                    </button>
+
+                    <button onclick="openRoleModal()" class="px-2.5 py-1.5 rounded-xl text-xs font-bold glass-card active:scale-95 flex items-center gap-1.5">
+                        <i id="role-icon" class="fa-solid fa-user-graduate text-blue-400"></i>
+                        <span id="role-badge" class="text-[10px]">Студент</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <main class="max-w-md mx-auto px-4 space-y-4 mt-3">
+            <!-- СЕКЦИЯ РАСПИСАНИЯ -->
+            <div id="section-schedule" class="space-y-4">
+                <nav class="flex space-x-2 overflow-x-auto no-scrollbar py-0.5">
+                    <button onclick="setView('today')" class="tab-btn flex-1 min-w-[85px] py-2 px-2.5 rounded-xl text-xs font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
+                        <span>Сегодня</span>
+                    </button>
+                    <button onclick="setView('tomorrow')" class="tab-btn flex-1 min-w-[85px] py-2 px-2.5 rounded-xl text-xs font-semibold text-center transition flex flex-col items-center gap-0.5 glass-card border border-transparent">
+                        <span>Завтра</span>
+                    </button>
+                </nav>
+
+                <div class="glass-card rounded-2xl p-4 flex items-center justify-between border-l-4 border-l-blue-500 shadow-md">
+                    <div>
+                        <span class="text-[10px] font-extrabold text-blue-400 uppercase tracking-wider block mb-0.5">РАСПИСАНИЕ</span>
+                        <h2 class="text-lg font-bold">Пары группы</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- СЕКЦИЯ ОДНОГРУППНИКОВ -->
+            <div id="section-classmates" class="hidden space-y-4">
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-cyan-500 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold">👥 Одногруппники</h2>
+                        <p class="text-xs opacity-70">Профили и аккаунты группы</p>
+                    </div>
+                    <button id="add-classmate-btn" onclick="openAddClassmateModal()" class="hidden bg-cyan-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold active:scale-95 flex items-center gap-1">
+                        <i class="fa-solid fa-user-plus"></i> Добавить
+                    </button>
+                </div>
+
+                <div id="classmates-container" class="grid grid-cols-1 gap-3"></div>
+            </div>
+
+            <!-- СЕКЦИЯ ЧАТА -->
+            <div id="section-chat" class="hidden space-y-3">
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-purple-500">
+                    <h2 class="text-lg font-bold">💬 Общий чат группы</h2>
+                    <p class="text-xs opacity-70">Общайтесь от имени своего аккаунта</p>
+                </div>
+
+                <div id="chat-messages" class="glass-card rounded-2xl p-3 h-64 overflow-y-auto space-y-2 text-xs"></div>
+
+                <div class="flex gap-2">
+                    <input type="text" id="chat-input" placeholder="Напишите сообщение..." class="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-cyan-500">
+                    <button onclick="sendChatMessage()" class="bg-cyan-600 text-white px-4 rounded-xl text-xs font-bold active:scale-95">
+                        <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- МОДАЛКА СКАНЕРА ЛИЦА -->
+    <div id="face-modal" class="fixed inset-0 bg-black/90 backdrop-blur-md z-50 hidden flex flex-col items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm rounded-3xl p-5 text-center space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                <h3 class="font-bold text-sm text-cyan-400 flex items-center gap-2">
+                    <i class="fa-solid fa-face-viewfinder"></i> Сканирование лица
+                </h3>
+                
+                <div class="flex items-center gap-2">
+                    <button id="torch-btn" onclick="toggleTorch()" class="w-8 h-8 rounded-xl bg-white/10 text-yellow-400 flex items-center justify-center text-xs active:scale-95 transition">
+                        <i class="fa-solid fa-lightbulb"></i>
+                    </button>
+                    <button onclick="closeFaceAuthModal()" class="text-lg opacity-60"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+            </div>
+
+            <p id="face-status-text" class="text-xs opacity-80">Инициализация...</p>
+
+            <div id="scanner-frame" class="relative w-64 h-64 mx-auto rounded-3xl overflow-hidden border-2 border-cyan-500/50 bg-black flex items-center justify-center transition-all duration-300">
+                <video id="webcam-video" autoplay muted playsinline class="w-full h-full object-cover"></video>
+                <div class="absolute inset-0 border-2 border-cyan-400/30 rounded-3xl pointer-events-none animate-pulse"></div>
+            </div>
+
+            <button onclick="scanFaceNow()" id="scan-btn" disabled class="w-full bg-cyan-600 text-white font-bold py-3 rounded-xl text-xs opacity-50 active:scale-95 transition">
+                Распознать и войти
+            </button>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА ДОБАВЛЕНИЯ СТУДЕНТА (С КАМЕРОЙ/ГАЛЕРЕЕЙ) -->
+    <div id="classmate-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 overflow-y-auto">
+        <div class="glass-card w-full max-w-sm rounded-3xl p-5 space-y-3 my-8">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                <h3 class="font-bold text-sm">Карточка одногруппника</h3>
+                <button onclick="closeClassmateModal()" class="text-lg opacity-60"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-2 text-xs">
+                <div>
+                    <label class="block opacity-70 mb-0.5">Фамилия:</label>
+                    <input type="text" id="cm-surname" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="Иванов">
+                </div>
+                <div>
+                    <label class="block opacity-70 mb-0.5">Имя:</label>
+                    <input type="text" id="cm-name" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="Иван">
+                </div>
+                <div>
+                    <label class="block opacity-70 mb-0.5">Отчество:</label>
+                    <input type="text" id="cm-patronymic" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="Иванович">
+                </div>
+                <div class="grid grid-cols-2 gap-2">
+                    <div>
+                        <label class="block opacity-70 mb-0.5">Возраст:</label>
+                        <input type="number" id="cm-age" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="16">
+                    </div>
+                    <div>
+                        <label class="block opacity-70 mb-0.5">Дата рождения:</label>
+                        <input type="text" id="cm-dob" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="15.10.2009">
+                    </div>
+                </div>
+
+                <!-- ВЫБОР ИЛИ СФОТКАТЬ ФОТО -->
+                <div>
+                    <label class="block opacity-70 mb-1">Фото лица:</label>
+                    <div class="flex gap-2 mb-2">
+                        <button type="button" onclick="openAddPhotoCamera()" class="flex-1 bg-cyan-600/30 border border-cyan-500/40 text-cyan-200 py-2 rounded-xl flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-camera"></i> Сфоткать
+                        </button>
+                        <button type="button" onclick="document.getElementById('cm-photo-input').click()" class="flex-1 glass-card py-2 rounded-xl flex items-center justify-center gap-1">
+                            <i class="fa-solid fa-image"></i> Галерея
+                        </button>
+                    </div>
+
+                    <input type="file" id="cm-photo-input" accept="image/*" class="hidden" onchange="previewFilePhoto(event)">
+
+                    <!-- Окно снимка с камеры -->
+                    <div id="add-photo-cam-container" class="hidden relative w-full h-40 bg-black rounded-xl overflow-hidden mb-2">
+                        <video id="add-photo-video" autoplay playsinline class="w-full h-full object-cover"></video>
+                        <button type="button" onclick="takeSnapshotForClassmate()" class="absolute bottom-2 left-1/2 -translate-x-1/2 bg-cyan-500 text-black text-[10px] font-black px-3 py-1.5 rounded-lg shadow-lg">
+                            Сделано
+                        </button>
+                    </div>
+
+                    <!-- Предпросмотр выбранной фотки -->
+                    <img id="cm-photo-preview" class="w-20 h-20 object-cover rounded-xl border border-cyan-500/30 hidden mx-auto">
+                </div>
+            </div>
+
+            <button onclick="saveClassmate()" class="w-full bg-cyan-600 text-white font-bold py-2.5 rounded-xl text-xs active:scale-95 mt-2">Сохранить аккаунт</button>
+        </div>
+    </div>
+
+    <!-- МОДАЛКА РОЛЕЙ -->
+    <div id="role-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-xs rounded-3xl p-5 space-y-4">
+            <div class="flex justify-between items-center border-b border-white/10 pb-3">
+                <h3 class="font-bold text-base">Выбор роли</h3>
+                <button onclick="closeRoleModal()" class="text-lg opacity-60"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-2">
+                <button onclick="selectRole('student')" class="w-full text-left p-3 rounded-2xl glass-card flex items-center gap-3">
+                    <i class="fa-solid fa-user-graduate text-blue-400 text-lg"></i>
+                    <div class="font-bold text-xs">Студент</div>
+                </button>
+                <button onclick="promptRolePin('admin')" class="w-full text-left p-3 rounded-2xl glass-card flex items-center gap-3">
+                    <i class="fa-solid fa-code text-purple-400 text-lg"></i>
+                    <div class="font-bold text-xs">Разработчик / Админ</div>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <nav id="bottom-nav" class="fixed bottom-0 left-0 right-0 z-40 glass-card border-t py-2 px-4 shadow-2xl hidden">
+        <div class="max-w-md mx-auto flex justify-around items-center">
+            <button onclick="switchTab('schedule')" id="nav-schedule" class="nav-item flex flex-col items-center gap-1 text-blue-400 font-bold">
+                <i class="fa-solid fa-calendar-days text-lg"></i>
+                <span class="text-[10px]">Уроки</span>
+            </button>
+            <button onclick="switchTab('classmates')" id="nav-classmates" class="nav-item flex flex-col items-center gap-1 opacity-60">
+                <i class="fa-solid fa-users text-lg"></i>
+                <span class="text-[10px]">Группа</span>
+            </button>
+            <button onclick="switchTab('chat')" id="nav-chat" class="nav-item flex flex-col items-center gap-1 opacity-60">
+                <i class="fa-solid fa-comments text-lg"></i>
+                <span class="text-[10px]">Чат</span>
+            </button>
+        </div>
+    </nav>
+
+    <div id="toast" class="fixed bottom-16 left-1/2 -translate-x-1/2 bg-cyan-600 text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-2xl opacity-0 transition-all duration-300 pointer-events-none flex items-center gap-2 z-50">
+        <i class="fa-solid fa-circle-check text-base"></i>
+        <span id="toast-msg">Готово!</span>
+    </div>
+
+    <script>
+        const ADMIN_PIN_EXACT = "126126126";
+        let currentRole = 'student';
+        let currentUser = null;
+        let modelsLoaded = false;
+        let classmates = JSON.parse(localStorage.getItem('tis_classmates_descriptors') || '[]');
+        let chatMessages = JSON.parse(localStorage.getItem('tis_chat_messages') || '[]');
+        let currentStream = null;
+        let addPhotoCamStream = null;
+        let capturedPhotoData = null;
+        let isTorchOn = false;
+
+        document.addEventListener("DOMContentLoaded", function() {
+            // ПРОВЕРКА СОХРАНЕННОЙ СЕССИИ (Чтобы не выкидывало при перезагрузке)
+            const savedUser = localStorage.getItem('logged_user_name');
+            const savedRole = localStorage.getItem('logged_user_role') || 'student';
+
+            if (savedUser) {
+                currentRole = savedRole;
+                enterApp(savedUser);
+            } else {
+                showAuthScreen();
+            }
+            renderClassmates();
+            renderChat();
+        });
+
+        function showAuthScreen() {
+            document.getElementById('auth-screen').classList.remove('hidden');
+            document.getElementById('app-content').classList.add('hidden');
+            document.getElementById('bottom-nav').classList.add('hidden');
+        }
+
+        function startFaceAuthFromScreen() {
+            openFaceAuthModal();
+        }
+
+        function continueAsGuest() {
+            enterApp("Гость");
+        }
+
+        // ВХОД ДЛЯ РАЗРАБОТЧИКА
+        function loginAsAdminDirect() {
+            const pin = prompt("Введите PIN-код Разработчика:");
+            if (pin === ADMIN_PIN_EXACT) {
+                currentRole = 'admin';
+                localStorage.setItem('logged_user_role', 'admin');
+                enterApp("Разработчик (Админ)");
+                showToast("Вход выполнен как Разработчик!");
+            } else if (pin) {
+                alert("Неверный PIN-код!");
+            }
+        }
+
+        function enterApp(userName) {
+            currentUser = userName;
+            localStorage.setItem('logged_user_name', userName);
+            
+            document.getElementById('auth-screen').classList.add('hidden');
+            document.getElementById('app-content').classList.remove('hidden');
+            document.getElementById('bottom-nav').classList.remove('hidden');
+            
+            document.getElementById('user-status-text').innerText = userName;
+            document.getElementById('role-badge').innerText = currentRole === 'admin' ? "Разработчик" : "Студент";
+            document.getElementById('add-classmate-btn').classList.toggle('hidden', currentRole !== 'admin');
+            
+            renderClassmates();
+        }
+
+        function logoutUser() {
+            localStorage.removeItem('logged_user_name');
+            localStorage.removeItem('logged_user_role');
+            currentUser = null;
+            currentRole = 'student';
+            showAuthScreen();
+        }
+
+        async function loadFaceModels() {
+            try {
+                const MODEL_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api/model';
+                await faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceLandmark64Net.loadFromUri(MODEL_URL);
+                await faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL);
+                modelsLoaded = true;
+            } catch (err) {
+                console.error("Ошибка загрузки моделей:", err);
+            }
+        }
+
+        async function openFaceAuthModal() {
+            document.getElementById('face-modal').classList.remove('hidden');
+            const video = document.getElementById('webcam-video');
+            const statusText = document.getElementById('face-status-text');
+            const scanBtn = document.getElementById('scan-btn');
+
+            if (!modelsLoaded) {
+                statusText.innerText = "Загрузка Нейросети...";
+                await loadFaceModels();
+            }
+
+            statusText.innerText = "Включение камеры...";
+            try {
+                currentStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = currentStream;
+                statusText.innerText = "Направьте камеру на лицо";
+                scanBtn.disabled = false;
+                scanBtn.classList.remove('opacity-50');
+            } catch (err) {
+                statusText.innerText = "Ошибка доступа к камере!";
+            }
+        }
+
+        async function toggleTorch() {
+            isTorchOn = !isTorchOn;
+            const torchBtn = document.getElementById('torch-btn');
+            const scannerFrame = document.getElementById('scanner-frame');
+
+            if (isTorchOn) {
+                torchBtn.classList.add('bg-yellow-400', 'text-black');
+            } else {
+                torchBtn.classList.remove('bg-yellow-400', 'text-black');
+            }
+
+            if (currentStream) {
+                const track = currentStream.getVideoTracks()[0];
+                if (track && track.getCapabilities && track.getCapabilities().torch) {
+                    try { await track.applyConstraints({ advanced: [{ torch: isTorchOn }] }); } catch (e) {}
+                }
+            }
+
+            scannerFrame.classList.toggle('screen-flashlight', isTorchOn);
+        }
+
+        function closeFaceAuthModal() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+                currentStream = null;
+            }
+            document.getElementById('face-modal').classList.add('hidden');
+        }
+
+        // РАСПОЗНАВАНИЕ И СВЕРКА ЛИЦА С АКТИВНЫМИ АККАУНТАМИ
+        async function scanFaceNow() {
+            const video = document.getElementById('webcam-video');
+            const statusText = document.getElementById('face-status-text');
+
+            statusText.innerText = "Сканирование и сверка...";
+            const detection = await faceapi.detectSingleFace(video).withFaceLandmarks().withFaceDescriptor();
+
+            if (!detection) {
+                statusText.innerText = "Лицо не найдено!";
+                return;
+            }
+
+            if (classmates.length === 0) {
+                statusText.innerText = "База пуста! Попросите Разработчика добавить людей.";
+                return;
+            }
+
+            const labeledDescriptors = classmates.map(c => {
+                const floatArray = new Float32Array(c.descriptor);
+                return new faceapi.LabeledFaceDescriptors(c.fullName, [floatArray]);
+            });
+
+            const faceMatcher = new faceapi.FaceMatcher(labeledDescriptors, 0.55);
+            const bestMatch = faceMatcher.findBestMatch(detection.descriptor);
+
+            if (bestMatch.label !== 'unknown') {
+                const name = bestMatch.label;
+                closeFaceAuthModal();
+                enterApp(name);
+                showToast(`С возвращением, ${name}!`);
+            } else {
+                statusText.innerText = "Лицо не совпадает ни с одним аккаунтом!";
+            }
+        }
+
+        // РАБОТА С СФОТКАТЬ/ГАЛЕРЕЕЙ ПРИ ДОБАВЛЕНИИ
+        async function openAddPhotoCamera() {
+            const camBox = document.getElementById('add-photo-cam-container');
+            const video = document.getElementById('add-photo-video');
+            camBox.classList.remove('hidden');
+
+            try {
+                addPhotoCamStream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "user" } });
+                video.srcObject = addPhotoCamStream;
+            } catch (err) {
+                alert("Не удалось включить камеру!");
+            }
+        }
+
+        function takeSnapshotForClassmate() {
+            const video = document.getElementById('add-photo-video');
+            const canvas = document.createElement('canvas');
+            canvas.width = video.videoWidth || 320;
+            canvas.height = video.videoHeight || 240;
+            const ctx = canvas.getContext('2d');
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            capturedPhotoData = canvas.toDataURL('image/jpeg');
+
+            const preview = document.getElementById('cm-photo-preview');
+            preview.src = capturedPhotoData;
+            preview.classList.remove('hidden');
+
+            if (addPhotoCamStream) {
+                addPhotoCamStream.getTracks().forEach(t => t.stop());
+            }
+            document.getElementById('add-photo-cam-container').classList.add('hidden');
+        }
+
+        function previewFilePhoto(e) {
+            const file = e.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(evt) {
+                    capturedPhotoData = evt.target.result;
+                    const preview = document.getElementById('cm-photo-preview');
+                    preview.src = capturedPhotoData;
+                    preview.classList.remove('hidden');
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        async function saveClassmate() {
+            const surname = document.getElementById('cm-surname').value.trim();
+            const name = document.getElementById('cm-name').value.trim();
+            const patronymic = document.getElementById('cm-patronymic').value.trim();
+            const age = document.getElementById('cm-age').value.trim();
+            const dob = document.getElementById('cm-dob').value.trim();
+
+            if (!surname || !name || !capturedPhotoData) return alert("Заполните ФИО и добавьте фото!");
+
+            showToast("Считывание биометрии...");
+
+            if (!modelsLoaded) await loadFaceModels();
+
+            const img = await faceapi.fetchImage(capturedPhotoData);
+            const detection = await faceapi.detectSingleFace(img).withFaceLandmarks().withFaceDescriptor();
+
+            if (!detection) {
+                alert("Лицо на фото не обнаружено! Сделайте более четкий снимок.");
+                return;
+            }
+
+            const descriptorArray = Array.from(detection.descriptor);
+            const fullName = `${surname} ${name} ${patronymic}`.trim();
+
+            classmates.push({
+                id: Date.now(),
+                surname, name, patronymic, fullName,
+                age: age || '--',
+                dob: dob || '--',
+                photo: capturedPhotoData,
+                descriptor: descriptorArray
+            });
+
+            localStorage.setItem('tis_classmates_descriptors', JSON.stringify(classmates));
+            closeClassmateModal();
+            renderClassmates();
+            showToast("Аккаунт успешно создан!");
+        }
+
+        function renderClassmates() {
+            const container = document.getElementById('classmates-container');
+            container.innerHTML = '';
+
+            if (classmates.length === 0) {
+                container.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-xs opacity-60">База аккаунтов пуста. Войдите как Разработчик, чтобы добавить людей.</div>`;
+                return;
+            }
+
+            classmates.forEach(c => {
+                const isOnline = currentUser === c.fullName;
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl p-3 flex items-center justify-between gap-3";
+                card.innerHTML = `
+                    <div class="flex items-center gap-3 overflow-hidden">
+                        <div class="relative">
+                            <img src="${c.photo}" class="w-14 h-14 rounded-2xl object-cover border border-cyan-500/30 shrink-0">
+                            ${isOnline ? '<span class="absolute -top-1 -right-1 w-3.5 h-3.5 bg-green-500 border-2 border-black rounded-full"></span>' : ''}
+                        </div>
+                        <div class="min-w-0">
+                            <h4 class="text-xs font-extrabold truncate">${c.fullName}</h4>
+                            <div class="text-[10px] opacity-70 space-y-0.5 mt-0.5">
+                                <p><i class="fa-solid fa-cake-candles text-pink-400 mr-1"></i> ${c.dob} (${c.age} лет)</p>
+                                <p class="${isOnline ? 'text-green-400 font-bold' : 'opacity-50'}">
+                                    <i class="fa-solid fa-circle text-[8px] mr-1"></i>${isOnline ? 'В сети' : 'Офлайн'}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                    ${currentRole === 'admin' ? `
+                        <button onclick="deleteClassmate(${c.id})" class="bg-red-600/30 text-red-300 border border-red-500/30 px-2.5 py-1.5 rounded-xl text-xs shrink-0"><i class="fa-solid fa-trash"></i></button>
+                    ` : ''}
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function deleteClassmate(id) {
+            classmates = classmates.filter(c => c.id !== id);
+            localStorage.setItem('tis_classmates_descriptors', JSON.stringify(classmates));
+            renderClassmates();
+        }
+
+        // РАБОТА С ЧАТОМ
+        function sendChatMessage() {
+            const input = document.getElementById('chat-input');
+            const msgText = input.value.trim();
+            if (!msgText) return;
+
+            chatMessages.push({
+                user: currentUser || "Гость",
+                text: msgText,
+                time: new Date().toLocaleTimeString([], { hour: '2-2:2', minute: '2-2' })
+            });
+
+            localStorage.setItem('tis_chat_messages', JSON.stringify(chatMessages));
+            input.value = '';
+            renderChat();
+        }
+
+        function renderChat() {
+            const container = document.getElementById('chat-messages');
+            container.innerHTML = '';
+
+            chatMessages.forEach(m => {
+                const isMe = m.user === currentUser;
+                container.innerHTML += `
+                    <div class="flex flex-col ${isMe ? 'items-end' : 'items-start'}">
+                        <span class="text-[9px] opacity-50 px-1">${m.user} • ${m.time}</span>
+                        <div class="p-2 rounded-xl max-w-[80%] ${isMe ? 'bg-cyan-600 text-white' : 'glass-card'}">
+                            ${m.text}
+                        </div>
+                    </div>
+                `;
+            });
+            container.scrollTop = container.scrollHeight;
+        }
+
+        function openRoleModal() { document.getElementById('role-modal').classList.remove('hidden'); }
+        function closeRoleModal() { document.getElementById('role-modal').classList.add('hidden'); }
+        function openAddClassmateModal() { document.getElementById('classmate-modal').classList.remove('hidden'); }
+        function closeClassmateModal() { 
+            document.getElementById('classmate-modal').classList.add('hidden'); 
+            if (addPhotoCamStream) addPhotoCamStream.getTracks().forEach(t => t.stop());
+        }
+
+        function selectRole(role) {
+            currentRole = role;
+            localStorage.setItem('logged_user_role', role);
+            document.getElementById('role-badge').innerText = role === 'admin' ? "Разработчик" : "Студент";
+            document.getElementById('add-classmate-btn').classList.toggle('hidden', role !== 'admin');
+            closeRoleModal();
+            renderClassmates();
+        }
+
+        function promptRolePin(role) {
+            const pin = prompt("Введите PIN-код админа:");
+            if (pin === ADMIN_PIN_EXACT) selectRole('admin');
+            else if (pin) alert("Неверный PIN!");
+        }
+
+        function switchTab(tab) {
+            document.getElementById('section-schedule').classList.toggle('hidden', tab !== 'schedule');
+            document.getElementById('section-classmates').classList.toggle('hidden', tab !== 'classmates');
+            document.getElementById('section-chat').classList.toggle('hidden', tab !== 'chat');
+            
+            document.getElementById('nav-schedule').classList.toggle('opacity-60', tab !== 'schedule');
+            document.getElementById('nav-classmates').classList.toggle('opacity-60', tab !== 'classmates');
+            document.getElementById('nav-chat').classList.toggle('opacity-60', tab !== 'chat');
+        }
+
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toast-msg').innerText = msg;
+            toast.classList.remove('opacity-0');
+            setTimeout(() => toast.classList.add('opacity-0'), 2500);
+        }
+    </script>
+</body>
+</html>
