@@ -159,6 +159,21 @@
                 </div>
             </div>
 
+            <!-- СЕКЦИЯ ДОМАШНЕГО ЗАДАНИЯ -->
+            <div id="section-hw" class="hidden space-y-4">
+                <div class="glass-card rounded-2xl p-4 border-l-4 border-l-amber-500 flex justify-between items-center">
+                    <div>
+                        <h2 class="text-lg font-bold">📚 Домашнее задание</h2>
+                        <p class="text-xs opacity-70">Задания по предметам группы</p>
+                    </div>
+                    <button onclick="openAddHwModal()" class="bg-amber-600 text-white px-3 py-1.5 rounded-xl text-xs font-bold active:scale-95 flex items-center gap-1">
+                        <i class="fa-solid fa-plus"></i> Записать
+                    </button>
+                </div>
+
+                <div id="hw-container" class="space-y-3"></div>
+            </div>
+
             <!-- СЕКЦИЯ ОДНОГРУППНИКОВ -->
             <div id="section-classmates" class="hidden space-y-4">
                 <div class="glass-card rounded-2xl p-4 border-l-4 border-l-cyan-500 flex justify-between items-center">
@@ -191,6 +206,33 @@
                 </div>
             </div>
         </main>
+    </div>
+
+    <!-- МОДАЛКА ДОБАВЛЕНИЯ ДЗ -->
+    <div id="hw-modal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-card w-full max-w-sm rounded-3xl p-5 space-y-3">
+            <div class="flex justify-between items-center border-b border-white/10 pb-2">
+                <h3 class="font-bold text-sm text-amber-400">Записать домашку</h3>
+                <button onclick="closeAddHwModal()" class="text-lg opacity-60"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            
+            <div class="space-y-2 text-xs">
+                <div>
+                    <label class="block opacity-70 mb-0.5">Предмет:</label>
+                    <input type="text" id="hw-subject" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="например, Математика">
+                </div>
+                <div>
+                    <label class="block opacity-70 mb-0.5">Задание:</label>
+                    <textarea id="hw-text" rows="3" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="Что задали выполнить..."></textarea>
+                </div>
+                <div>
+                    <label class="block opacity-70 mb-0.5">Срок сдачи:</label>
+                    <input type="text" id="hw-date" class="w-full bg-black/30 rounded-xl p-2.5 border border-white/10 focus:outline-none" placeholder="На завтра / 18 сентября">
+                </div>
+            </div>
+
+            <button onclick="saveHomework()" class="w-full bg-amber-600 text-white font-bold py-2.5 rounded-xl text-xs active:scale-95 mt-2">Добавить задание</button>
+        </div>
     </div>
 
     <!-- МОДАЛКА СКАНЕРА ЛИЦА -->
@@ -309,6 +351,10 @@
                 <i class="fa-solid fa-calendar-days text-lg"></i>
                 <span class="text-[10px]">Уроки</span>
             </button>
+            <button onclick="switchTab('hw')" id="nav-hw" class="nav-item flex flex-col items-center gap-1 opacity-60">
+                <i class="fa-solid fa-book-bookmark text-lg"></i>
+                <span class="text-[10px]">ДЗ</span>
+            </button>
             <button onclick="switchTab('classmates')" id="nav-classmates" class="nav-item flex flex-col items-center gap-1 opacity-60">
                 <i class="fa-solid fa-users text-lg"></i>
                 <span class="text-[10px]">Группа</span>
@@ -333,6 +379,7 @@
         let modelsLoaded = false;
         let classmates = JSON.parse(localStorage.getItem('tis_classmates_descriptors') || '[]');
         let chatMessages = JSON.parse(localStorage.getItem('tis_chat_messages') || '[]');
+        let homeworkList = JSON.parse(localStorage.getItem('tis_homework_list') || '[]');
         let currentStream = null;
         let addPhotoCamStream = null;
         let capturedPhotoData = null;
@@ -347,9 +394,8 @@
 
         const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 
-        // РАБОЧЕЕ РАСПИСАНИЕ С РАЗНИЦЕЙ В НЕДЕЛЯХ (ЧИСЛИТЕЛЬ / ЗНАМЕНАТЕЛЬ)
         const scheduleData = {
-            1: { // 1 Неделя (Числитель)
+            1: {
                 1: [
                     { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
                     { name: "Информатика", teacher: "Анесова А.А." },
@@ -379,7 +425,7 @@
                     { name: "Русский язык", teacher: "Ибраева Н.Н." }
                 ]
             },
-            2: { // 2 Неделя (Знаменатель)
+            2: {
                 1: [
                     { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
                     { name: "Информатика", teacher: "Анесова А.А." },
@@ -423,6 +469,7 @@
             }
             renderClassmates();
             renderChat();
+            renderHomework();
             updateDatesAndSchedule();
 
             setInterval(updateDatesAndSchedule, 60000);
@@ -462,6 +509,7 @@
             document.getElementById('add-classmate-btn').classList.toggle('hidden', currentRole !== 'admin');
             
             renderClassmates();
+            renderHomework();
             updateDatesAndSchedule();
         }
 
@@ -473,7 +521,6 @@
             showAuthScreen();
         }
 
-        // ТОЧНЫЙ РАСЧЁТ НЕДЕЛЬ ПО ПОНЕДЕЛЬНИКАМ
         function getWeekInfo(date = new Date()) {
             const d = new Date(date);
             const day = d.getDay();
@@ -625,6 +672,71 @@
                 dayBlock.innerHTML = dayHeaderHtml + lessonsHtml;
                 container.appendChild(dayBlock);
             }
+        }
+
+        // ЛОГИКА ДОМАШНЕГО ЗАДАНИЯ (ДЗ)
+        function openAddHwModal() { document.getElementById('hw-modal').classList.remove('hidden'); }
+        function closeAddHwModal() { document.getElementById('hw-modal').classList.add('hidden'); }
+
+        function saveHomework() {
+            const subject = document.getElementById('hw-subject').value.trim();
+            const text = document.getElementById('hw-text').value.trim();
+            const date = document.getElementById('hw-date').value.trim();
+
+            if (!subject || !text) return alert("Заполните предмет и задание!");
+
+            homeworkList.push({
+                id: Date.now(),
+                subject,
+                text,
+                date: date || 'К следующему уроку',
+                author: currentUser || 'Студент'
+            });
+
+            localStorage.setItem('tis_homework_list', JSON.stringify(homeworkList));
+            document.getElementById('hw-subject').value = '';
+            document.getElementById('hw-text').value = '';
+            document.getElementById('hw-date').value = '';
+
+            closeAddHwModal();
+            renderHomework();
+            showToast("Домашка сохранена!");
+        }
+
+        function renderHomework() {
+            const container = document.getElementById('hw-container');
+            container.innerHTML = '';
+
+            if (homeworkList.length === 0) {
+                container.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-xs opacity-60">Никаких заданий нет. Всё сделано! 🎉</div>`;
+                return;
+            }
+
+            homeworkList.forEach(hw => {
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl p-3.5 space-y-2 border-l-2 border-l-amber-500";
+                card.innerHTML = `
+                    <div class="flex justify-between items-start">
+                        <span class="text-xs font-black text-amber-400 uppercase tracking-wider">${hw.subject}</span>
+                        <span class="text-[10px] bg-amber-500/20 text-amber-300 font-bold px-2 py-0.5 rounded-md">${hw.date}</span>
+                    </div>
+                    <p class="text-xs opacity-90 leading-relaxed">${hw.text}</p>
+                    <div class="flex justify-between items-center text-[10px] opacity-50 pt-1 border-t border-white/5">
+                        <span>Записал: ${hw.author}</span>
+                        <button onclick="deleteHomework(${hw.id})" class="text-red-400 hover:text-red-300 font-bold">
+                            <i class="fa-solid fa-check"></i> Выполнено
+                        </button>
+                    </div>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        function deleteHomework(id) {
+            homeworkList = homeworkList.filter(h => h.id !== id);
+            localStorage.setItem('tis_homework_list', JSON.stringify(homeworkList));
+            renderHomework();
+            showToast("Задание отмечено!");
         }
 
         async function loadFaceModels() {
@@ -907,10 +1019,12 @@
 
         function switchTab(tab) {
             document.getElementById('section-schedule').classList.toggle('hidden', tab !== 'schedule');
+            document.getElementById('section-hw').classList.toggle('hidden', tab !== 'hw');
             document.getElementById('section-classmates').classList.toggle('hidden', tab !== 'classmates');
             document.getElementById('section-chat').classList.toggle('hidden', tab !== 'chat');
             
             document.getElementById('nav-schedule').classList.toggle('opacity-60', tab !== 'schedule');
+            document.getElementById('nav-hw').classList.toggle('opacity-60', tab !== 'hw');
             document.getElementById('nav-classmates').classList.toggle('opacity-60', tab !== 'classmates');
             document.getElementById('nav-chat').classList.toggle('opacity-60', tab !== 'chat');
         }
