@@ -394,65 +394,67 @@
 
         const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 
+        // ОБНОВЛЕННОЕ РАСПИСАНИЕ С УЧЕТОМ НОВЫХ ФАЙЛОВ (ФИЗРА И ПРЕДМЕТЫ ПО ДНЯМ)
         const scheduleData = {
-            1: {
-                1: [
+            1: { // 1 Неделя (Числитель)
+                1: [ // Понедельник
                     { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
                     { name: "Информатика", teacher: "Анесова А.А." },
                     { name: "Всемирная история", teacher: "Боранбаева Д. М." },
                     { name: "География", teacher: "Байбакирова С.Ж." }
                 ],
-                2: [
+                2: [ // Вторник
                     { name: "Физическая культура", teacher: "Тоқтарбек Е." },
                     { name: "Физика", teacher: "Жексенбина А.З." },
                     { name: "НВП", teacher: "Бердіқұл Б.А." },
                     { name: "Биология", teacher: "Ермекқалиева З. А." }
                 ],
-                3: [
-                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { name: "История Казахстана", teacher: "Жанватырова А.Е." },
+                3: [ // Среда
+                    { name: "Казахский язык и литература / Физика", teacher: "Калиева С.Н. / Жексенбина А.З." },
+                    { name: "История Казахстана", teacher: "Жанбатырова А.Е." },
                     { name: "Иностранный язык", teacher: "Момынқұлова М.А." },
                     { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
-                4: [
-                    { name: "Химия", teacher: "Жүніс У.Х." },
+                4: [ // Четверг
+                    { name: "Химия / Физическая культура", teacher: "Жүніс У.Х. / Тоқтарбек Е." },
                     { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
+                    { name: "Русский язык / Русская литература", teacher: "Ибраева Н.Н." }
                 ],
-                5: [
+                5: [ // Пятница
                     { name: "Математика", teacher: "Ерғали А.Ә." },
                     { name: "Химия", teacher: "Жүніс У.Х." },
                     { name: "Русский язык", teacher: "Ибраева Н.Н." }
                 ]
             },
-            2: {
-                1: [
+            2: { // 2 Неделя (Знаменатель)
+                1: [ // Понедельник
                     { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
                     { name: "Информатика", teacher: "Анесова А.А." },
-                    { name: "Всемирная история", teacher: "Боранбаева Д. М." },
+                    { name: "Русская литература", teacher: "Ибраева Н.Н." },
                     { name: "География", teacher: "Байбакирова С.Ж." }
                 ],
-                2: [
-                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
+                2: [ // Вторник
+                    { name: "Всемирная история", teacher: "Боранбаева Д. М." },
                     { name: "Физика", teacher: "Жексенбина А.З." },
-                    { name: "Математика", teacher: "Ерғали А.Ә." },
+                    { name: "НВП", teacher: "Бердіқұл Б.А." },
                     { name: "Биология", teacher: "Ермекқалиева З. А." }
                 ],
-                3: [
-                    { name: "Физика", teacher: "Жексенбина А.З." },
-                    { name: "История Казахстана", teacher: "Жанватырова А.Е." },
-                    { name: "Иностранный язык", teacher: "Момынқұлова М.А." },
-                    { name: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                4: [
-                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
-                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { name: "Русская литература", teacher: "Ибраева Н.Н." }
-                ],
-                5: [
-                    { name: "Математика", teacher: "Ерғали А.Ә." },
+                3: [ // Среда
                     { name: "Химия", teacher: "Жүніс У.Х." },
-                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
+                    { name: "Физика", teacher: "Жексенбина А.З." },
+                    { name: "Физическая культура", teacher: "Тоқтарбек Е." }
+                ],
+                4: [ // Четверг
+                    { name: "Казахский язык и литература / Физическая культура", teacher: "Калиева С.Н. / Тоқтарбек Е." },
+                    { name: "Русский язык / Русская литература", teacher: "Ибраева Н.Н." },
+                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                    { name: "История Казахстана", teacher: "Жанбатырова А.Е." }
+                ],
+                5: [ // Пятница
+                    { name: "Русский язык", teacher: "Ибраева Н.Н." },
+                    { name: "Химия", teacher: "Жүніс У.Х." },
+                    { name: "Математика", teacher: "Ерғали А.Ә." },
+                    { name: "Иностранный язык", teacher: "Момынқұлова М.А." }
                 ]
             }
         };
@@ -472,7 +474,6 @@
             renderHomework();
             updateDatesAndSchedule();
 
-            // Автообновление табло таймеров каждую секунду
             setInterval(updateDatesAndSchedule, 1000);
         });
 
@@ -605,7 +606,6 @@
             }
         }
 
-        // Вычисление прогресса текущей пары в процентах и минутах
         function getLessonProgress(slotString) {
             const now = new Date();
             const currentMinutes = now.getHours() * 60 + now.getMinutes();
@@ -663,7 +663,6 @@
                             <span class="text-[10px] font-bold bg-black/50 text-emerald-300 px-2.5 py-1 rounded-lg border border-emerald-500/30">${slot}</span>
                         </div>
 
-                        <!-- ЗЕЛЁНАЯ ПОЛОСКА ПРОГРЕССА УРОКА -->
                         <div class="space-y-1 pt-1">
                             <div class="w-full bg-black/60 rounded-full h-2.5 overflow-hidden p-0.5 border border-emerald-500/30">
                                 <div class="bg-gradient-to-r from-emerald-500 to-green-400 h-full rounded-full transition-all duration-500 shadow-sm shadow-emerald-400" style="width: ${progressInfo.percent}%"></div>
@@ -734,7 +733,6 @@
             }
         }
 
-        // ЛОГИКА ДОМАШНЕГО ЗАДАНИЯ (ДЗ)
         function openAddHwModal() { document.getElementById('hw-modal').classList.remove('hidden'); }
         function closeAddHwModal() { document.getElementById('hw-modal').classList.add('hidden'); }
 
@@ -1028,7 +1026,7 @@
             chatMessages.push({
                 user: currentUser || "Гость",
                 text: msgText,
-                time: new Date().toLocaleTimeString([], { hour: '2-2:2', minute: '2-2' })
+                time: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
             });
 
             localStorage.setItem('tis_chat_messages', JSON.stringify(chatMessages));
