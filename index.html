@@ -394,66 +394,65 @@
 
         const daysNames = ["Воскресенье", "Понедельник", "Вторник", "Среда", "Четверг", "Пятница", "Суббота"];
 
-        // РАСПИСАНИЕ С ПОЛНЫМ СООТВЕТСТВИЕМ НОВЫМ ФАЙЛАМ
         const scheduleData = {
             1: { // 1 Неделя (Числитель)
-                1: [ // Понедельник
+                1: [
                     { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
                     { name: "Информатика", teacher: "Анесова А.А." },
                     { name: "Всемирная история", teacher: "Боранбаева Д. М." },
                     { name: "География", teacher: "Байбакирова С.Ж." }
                 ],
-                2: [ // Вторник
+                2: [
                     { name: "Физическая культура", teacher: "Тоқтарбек Е." },
                     { name: "Физика", teacher: "Жексенбина А.З." },
                     { name: "НВП", teacher: "Бердіқұл Б.А." },
                     { name: "Биология", teacher: "Ермекқалиева З. А." }
                 ],
-                3: [ // Среда
-                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
+                3: [
+                    { name: "Казахский язык и литература / Физика", teacher: "Калиева С.Н. / Жексенбина А.З." },
                     { name: "История Казахстана", teacher: "Жанватырова А.Е." },
                     { name: "Иностранный язык", teacher: "Момынқұлова М.А." },
                     { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
-                4: [ // Четверг
-                    { name: "Химия", teacher: "Жүніс У.Х." },
+                4: [
+                    { name: "Химия / Физическая культура", teacher: "Жүніс У.Х. / Тоқтарбек Е." },
                     { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
+                    { name: "Русский язык / Русская литература", teacher: "Ибраева Н.Н." }
                 ],
-                5: [ // Пятница
+                5: [
                     { name: "Математика", teacher: "Ерғали А.Ә." },
                     { name: "Химия", teacher: "Жүніс У.Х." },
                     { name: "Русский язык", teacher: "Ибраева Н.Н." }
                 ]
             },
             2: { // 2 Неделя (Знаменатель)
-                1: [ // Понедельник
+                1: [
                     { name: "Графика и проектирование", teacher: "Бақыт А.Б." },
                     { name: "Информатика", teacher: "Анесова А.А." },
-                    { name: "Русская литература", teacher: "Ибраева Н.Н." },
+                    { name: "Всемирная история", teacher: "Боранбаева Д. М." },
                     { name: "География", teacher: "Байбакирова С.Ж." }
                 ],
-                2: [ // Вторник
-                    { name: "Всемирная история", teacher: "Боранбаева Д. М." },
+                2: [
+                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
                     { name: "Физика", teacher: "Жексенбина А.З." },
-                    { name: "НВП", teacher: "Бердіқұл Б.А." },
+                    { name: "Математика", teacher: "Ерғали А.Ә." },
                     { name: "Биология", teacher: "Ермекқалиева З. А." }
                 ],
-                3: [ // Среда
-                    { name: "Химия", teacher: "Жүніс У.Х." },
-                    { name: "Физическая культура", teacher: "Тоқтарбек Е." }
+                3: [
+                    { name: "Физика", teacher: "Жексенбина А.З." },
+                    { name: "История Казахстана", teacher: "Жанватырова А.Е." },
+                    { name: "Иностранный язык", teacher: "Момынқұлова М.А." },
+                    { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
-                4: [ // Четверг
+                4: [
+                    { name: "Физическая культура", teacher: "Тоқтарбек Е." },
                     { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { name: "Русский язык", teacher: "Ибраева Н.Н." },
-                    { name: "Казахский язык и литература", teacher: "Калиева С.Н." },
-                    { name: "История Казахстана", teacher: "Жанватырова А.Е." }
+                    { name: "Русская литература", teacher: "Ибраева Н.Н." }
                 ],
-                5: [ // Пятница
-                    { name: "Русский язык", teacher: "Ибраева Н.Н." },
-                    { name: "Химия", teacher: "Жүніс У.Х." },
+                5: [
                     { name: "Математика", teacher: "Ерғали А.Ә." },
-                    { name: "Иностранный язык", teacher: "Момынқұлова М.А." }
+                    { name: "Химия", teacher: "Жүніс У.Х." },
+                    { name: "Русский язык", teacher: "Ибраева Н.Н." }
                 ]
             }
         };
@@ -581,17 +580,17 @@
 
             if (view === 'today') {
                 document.getElementById('block-label').innerText = "СЕГОДНЯ";
-                document.getElementById('day-title').innerText = daysNames[dayIndex];
+                document.getElementById('day-title').innerText = daysNames[dayIndex] || "Понедельник";
                 document.getElementById('week-type-subtitle').innerText = `${weekType}-я неделя (${weekType === 1 ? 'Числитель' : 'Знаменатель'})`;
-                renderDayLessons(weekType, dayIndex, true);
+                renderDayLessons(weekType, dayIndex === 0 ? 1 : dayIndex, true);
             } else if (view === 'tomorrow') {
                 document.getElementById('block-label').innerText = "ЗАВТРА";
                 targetDate.setDate(now.getDate() + 1);
                 dayIndex = targetDate.getDay();
                 weekType = getWeekInfo(targetDate).weekType;
-                document.getElementById('day-title').innerText = daysNames[dayIndex];
+                document.getElementById('day-title').innerText = daysNames[dayIndex] || "Понедельник";
                 document.getElementById('week-type-subtitle').innerText = `${weekType}-я неделя (${weekType === 1 ? 'Числитель' : 'Знаменатель'})`;
-                renderDayLessons(weekType, dayIndex, false);
+                renderDayLessons(weekType, dayIndex === 0 ? 1 : dayIndex, false);
             } else if (view === 'week1') {
                 document.getElementById('block-label').innerText = "ВЕСЬ РАСПИСАНИЕ";
                 document.getElementById('day-title').innerText = "1 Неделя (Числитель)";
@@ -634,7 +633,7 @@
 
             const dayLessons = (scheduleData[weekType] && scheduleData[weekType][dayIndex]) || [];
 
-            if (dayLessons.length === 0 || dayIndex === 0) {
+            if (dayLessons.length === 0) {
                 container.innerHTML = `<div class="glass-card rounded-2xl p-6 text-center text-xs opacity-60">В этот день пар нет! 🎉</div>`;
                 return;
             }
